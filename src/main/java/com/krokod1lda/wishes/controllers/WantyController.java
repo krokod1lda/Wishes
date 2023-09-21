@@ -5,12 +5,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class MainController {
+public class WantyController {
 
     @GetMapping("/")
     public String home(Model model) {
 
         model.addAttribute("title", "Главная");
-        return "home";
+        return "main";
+    }
+
+    @GetMapping("/add-wanty")
+    public String addWanty(Model model) {
+
+        model.addAttribute("title", "Добавление запроса");
+        return "add-wanty";
     }
 }
