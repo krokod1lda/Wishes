@@ -1,3 +1,36 @@
+.forButtons {
+    font-size: medium;
+    font-family: Helvetica, sans-serif;
+    border: 1px solid #ced4da;
+
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}
+
+#buyed:checked {
+    background-color: #818181;
+    border: none;
+}
+
+#notBuyed:checked {
+    background-color: #818181;
+    border: none;
+}
+
+.form-control {
+    resize: none;
+}
+
+.container {
+    min-height: 600px;
+    max-width: 70%;
+}
+
+.forLabels {
+    color: #818181;
+}
+
+
 .sidenav {
     height: 100%;
     width: 0;
