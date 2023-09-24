@@ -16,31 +16,30 @@
 
 <div class="modal position-static d-block py-md-5">
     <div class="modal-dialog modal-content rounded-4 shadow">
-
         <div class="modal-header p-5 pb-4 border-bottom-0">
             <h3 class="fw-bold" th:text="'Добавление ' + ${role}"></h3>
+            <input id="typeId" th:value="${type}" style="display: none">
         </div>
 
         <div class="modal-body p-5 pt-0">
-
             <div class="form-floating mb-3">
-                <input type="text" class="form-control rounded-3" id="name" placeholder="Имя">
-                <label for="name" class="forLabels">Имя</label>
+                <input id="surnameId" type="text" class="form-control rounded-3" placeholder="Фамилия">
+                <label for="surnameId" class="forLabels">Фамилия</label>
             </div>
 
             <div class="form-floating mb-3">
-                <input type="text" class="form-control rounded-3" id="surname" placeholder="Фамилия">
-                <label for="surname" class="forLabels">Фамилия</label>
+                <input id="nameId" type="text" class="form-control rounded-3" placeholder="Имя">
+                <label for="nameId" class="forLabels">Имя</label>
             </div>
 
             <div class="form-floating mb-3">
-                <input type="text" class="form-control rounded-3" id="patronymic" placeholder="Отчество">
-                <label for="patronymic" class="forLabels">Отчество</label>
+                <input id="patronymicId" type="text" class="form-control rounded-3" placeholder="Отчество">
+                <label for="patronymicId" class="forLabels">Отчество</label>
             </div>
 
             <hr class="my-4">
 
-            <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="submit">
+            <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="submit" onclick="addPerson();">
                 Добавить
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -48,9 +47,9 @@
                 </svg>
             </button>
         </div>
-
     </div>
 </div>
+
 <!-- Футер страницы -->
 <footer th:insert="blocks/footer :: footer"></footer>
 
@@ -63,6 +62,27 @@
 
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
+    }
+
+    async function addPerson() {
+        let formData = new FormData();
+
+        const type = document.getElementById('typeId');
+        const name = document.getElementById('nameId');
+        const patronymic = document.getElementById('patronymicId');
+        const surname = document.getElementById('surnameId');
+
+        formData.append('type', type.value);
+        formData.append('name', name.value);
+        formData.append('patronymic', patronymic.value);
+        formData.append('surname', surname.value);
+
+        await fetch('/addPerson', {
+            method: 'POST',
+            body: formData
+        })
+
+        window.location.replace('/');
     }
 </script>
 

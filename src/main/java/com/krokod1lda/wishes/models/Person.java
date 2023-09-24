@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Human {
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,14 +16,14 @@ public class Human {
     private String surname;
     private String patronymic;
 
-    public Human(String type, String name, String surname, String patronymic) {
+    public Person(String type, String name, String surname, String patronymic) {
         this.type = type;
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
     }
 
-    public Human() {}
+    public Person() {}
 
     public long getId() {
         return id;
