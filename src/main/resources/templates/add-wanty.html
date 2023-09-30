@@ -23,113 +23,105 @@
         <div class="row g-5">
             <div class="col-md-5 col-lg-5 order-md-last">
                 <h5 class="mb-3">Добавление фото</h5>
-                <form class="card p-2">
+
+                <div class="card p-2">
                     <input class="form-control" id="fileUploadId" type="file" name="fileupload"/>
                     <button class="btn btn-light forButtons mt-1" id="upload-button" onclick="previewImage();">Посмотреть изображение</button>
                     <img id="image" style="display:none" class="img img-thumbnail">
-                </form>
+                </div>
             </div>
+
             <div class="col-md-7 col-lg-7">
-                <form class="needs-validation" novalidate="">
-                    <div class="row g-3">
+                <div class="row g-3">
 
-                        <div class="col-12">
-                            <label for="nameId" class="form-label">Название</label>
-                            <input type="text" class="form-control" id="nameId" placeholder="Название вещи..." required="">
-                            <div class="invalid-feedback">
-                                Введите название
-                            </div>
-                        </div>
+                    <div class="col-12">
+                        <label for="nameId" class="form-label">Название</label>
+                        <input type="text" class="form-control" id="nameId" placeholder="Название вещи...">
+                    </div>
 
+                    <div class="col-sm-6">
+                        <label for="dateId" class="form-label">Дата</label>
+                        <input type="date" class="form-control" id="dateId">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="sizeId" class="form-label">Размер</label>
+                        <input type="text" class="form-control" id="sizeId">
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <div class="row g-3">
+                    <div>
                         <div class="col-sm-6">
-                            <label for="dateId" class="form-label">Дата</label>
-                            <input type="date" class="form-control" id="dateId" placeholder="" value="" required="">
-                            <div class="invalid-feedback">
-                                Выберите дату
-                            </div>
-                        </div>
+                            <label for="sellerId" class="form-label">Продавец</label>
+                            <select class="form-select" id="sellerId">
+                                <option value="">Выберите...</option>
 
+                                <div th:each="el : ${map.get('sellers')}">
+                                    <option th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
                         <div class="col-sm-6">
-                            <label for="sizeId" class="form-label">Размер</label>
-                            <input type="text" class="form-control" id="sizeId" placeholder="" value="" required="">
-                            <div class="invalid-feedback">
-                                Введите размер
-                            </div>
-                        </div>
+                            <label for="buyerId" class="form-label">Байер</label>
+                            <select class="form-select" id="buyerId">
+                                <option value="">Выберите...</option>
 
-                    </div>
-
-                    <hr class="my-4">
-
-                    <div class="row g-3">
-                        <div>
-                            <div class="col-sm-6">
-                                <label for="sellerId" class="form-label">Продавец</label>
-                                <select class="form-select" id="sellerId" required="">
-                                    <option value="">Выберите...</option>
-                                    <option>Продавец1</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Выберите продавца
+                                <div th:each="el : ${map.get('buyers')}">
+                                    <option th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="col-sm-6">
-                                <label for="buyerId" class="form-label">Байер</label>
-                                <select class="form-select" id="buyerId" required="">
-                                    <option value="">Выберите...</option>
-                                    <option>Байер1</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Выберите байера
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="col-sm-6">
-                                <label for="clientId" class="form-label">Клиент</label>
-                                <select class="form-select" id="clientId" required="">
-                                    <option value="">Выберите...</option>
-                                    <option>Клиент1</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Выберите клиента
-                                </div>
-                            </div>
+                            </select>
                         </div>
                     </div>
 
-                    <hr class="my-4">
+                    <div>
+                        <div class="col-sm-6">
+                            <label for="clientId" class="form-label">Клиент</label>
+                            <select class="form-select" id="clientId">
+                                <option value="">Выберите...</option>
 
-                    <div class="row g-3">
-                        <h5 class="mb-3">Продажа</h5>
+                                <div th:each="el : ${map.get('clients')}">
+                                    <option th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}" ></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-                        <div class="my-3">
-                            <div class="form-check">
-                                <input id="buyed" name="paymentMethod" type="radio" class="form-check-input" checked="" required="">
-                                <label class="form-check-label" for="buyed">Купили</label>
-                            </div>
-                            <div class="form-check">
-                                <input id="notBuyed" name="paymentMethod" type="radio" class="form-check-input" required="">
-                                <label class="form-check-label" for="notBuyed">Не купили</label>
-                            </div>
+                <hr class="my-4">
+
+                <div class="row g-3">
+                    <h5 class="mb-3">Продажа</h5>
+
+                    <div class="my-3">
+                        <div class="form-check">
+                            <input id="notPurchasedId" name="paymentMethod" type="radio" class="form-check-input" checked>
+                            <label class="form-check-label" for="notPurchasedId">Не купили</label>
                         </div>
 
-
-                        <h5>Комментарий</h5>
-                        <div class="my-3">
-                            <textarea name="description" class="form-control" id="descriptionId" rows="8" maxlength="4000"></textarea>
+                        <div class="form-check">
+                            <input id="purchasedId" name="paymentMethod" type="radio" class="form-check-input">
+                            <label class="form-check-label" for="purchasedId">Купили</label>
                         </div>
-
                     </div>
 
-                    <hr class="my-4">
-                    <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="submit">Добавить запрос</button>
 
-                </form>
+                    <h5>Комментарий</h5>
+                    <div class="my-3">
+                        <textarea id="descriptionId" name="description" class="form-control" rows="8" maxlength="4000"></textarea>
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" onclick="addWanty();">Добавить запрос</button>
             </div>
         </div>
     </main>
@@ -148,24 +140,46 @@
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
     }
-</script>
 
-<script>  <!--Данный скрипт взят из DBProject, как и дизайн с фото-->
     function previewImage() {
         let input = document.getElementById('fileUploadId');
         let preview = document.getElementById('image');
-        // Для чтения содержимого файла
         let reader = new FileReader();
 
-        // Обработчик события, который будет вызван, когда файл будет успешно прочитан
         reader.onload = function() {
-            // Установка пути к загруженному изображению в атрибут src элемента img
             preview.src = reader.result;
-            // Отображаем элемент img
             preview.style.display = 'block';
         }
-        // Читаем содержимое выбранного файла
         reader.readAsDataURL(input.files[0]);
+    }
+
+    async function addWanty() {
+        let formData = new FormData();
+
+        let name = document.getElementById('nameId');
+        let date = document.getElementById('dateId');
+        let size = document.getElementById('sizeId');
+        let seller = document.getElementById('sellerId');
+        let buyer = document.getElementById('buyerId');
+        let client = document.getElementById('clientId');
+        let isPurchased = document.getElementById('purchasedId').checked;
+        let description = document.getElementById('descriptionId');
+
+        formData.append('name', name.value);
+        formData.append('date', date.value);
+        formData.append('size', size.value);
+        formData.append('seller', seller.value);
+        formData.append('buyer', buyer.value);
+        formData.append('client', client.value);
+        formData.append('isPurchased', isPurchased);
+        formData.append('description', description.value);
+
+        await fetch('/add-wanty', {
+            method: 'POST',
+            body: formData
+        })
+
+       window.location.replace("/");
     }
 </script>
 

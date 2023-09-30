@@ -69,9 +69,8 @@ public class PersonController {
         map.put("Клиенты", clients);
 
         for (Map.Entry<String, List<Person>> pair : map.entrySet()) {
-            if (pair.getValue().isEmpty()) {
+            if (pair.getValue().isEmpty())
                 map.remove(pair.getKey());
-            }
         }
 
         model.addAttribute("map", map);
@@ -82,9 +81,8 @@ public class PersonController {
     @GetMapping("/person{id}")
     public String updatePerson(@PathVariable(value = "id") long id, Model model) {
 
-        if (!personRepository.existsById(id)) {
+        if (!personRepository.existsById(id))
             return "redirect:/";
-        }
 
         Optional<Person> person = personRepository.findById(id);
         ArrayList<Person> res = new ArrayList<>();
@@ -108,6 +106,14 @@ public class PersonController {
         person.setSurname(surname);
 
         personRepository.save(person);
+
+        return "redirect:/all-persons";
+    }
+
+    @PostMapping("/deletePerson")
+    public String deletePerson(@RequestParam("id") long id) {
+
+        personRepository.deleteById(id);
 
         return "redirect:/all-persons";
     }

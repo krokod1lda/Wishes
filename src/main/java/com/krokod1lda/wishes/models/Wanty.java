@@ -14,7 +14,7 @@ public class Wanty {
     private long sellerId;
     private long buyerId;
     private long clientId;
-    private boolean isBuyed;
+    private boolean isPurchased;
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -22,16 +22,16 @@ public class Wanty {
     @Column(columnDefinition = "MEDIUMBLOB")
     private byte[] wantyPhoto;
 
-    public Wanty(String wantyName, String date, String size,
-                 long sellerId, long buyerId, long clientId,
-                 boolean isBuyed, String description, byte[] wantyPhoto) {
+    public Wanty(String wantyName, String date, String size, long sellerId, long buyerId,
+                 long clientId, boolean isPurchased, String description, byte[] wantyPhoto) {
+
         this.wantyName = wantyName;
         this.date = date;
         this.size = size;
         this.sellerId = sellerId;
         this.buyerId = buyerId;
         this.clientId = clientId;
-        this.isBuyed = isBuyed;
+        this.isPurchased = isPurchased;
         this.description = description;
         this.wantyPhoto = wantyPhoto;
     }
@@ -94,12 +94,12 @@ public class Wanty {
         this.clientId = clientId;
     }
 
-    public boolean isBuyed() {
-        return isBuyed;
+    public boolean isPurchased() {
+        return isPurchased;
     }
 
-    public void setBuyed(boolean buyed) {
-        isBuyed = buyed;
+    public void setPurchased(boolean isPurchased) {
+        this.isPurchased = isPurchased;
     }
 
     public String getDescription() {
