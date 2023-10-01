@@ -17,8 +17,8 @@
     <h3>Запросы клиентов</h3>
     <hr class="my-4">
 
-    <div th:each="el : ${wanties}">
-        <div class="col-md-12 mb-2">
+    <div th:each="el : ${wanties}" >
+        <div th:wishHref="'wanty' + ${el.id}" class="col-md-12 mb-2" style="cursor: pointer">
             <div class="row g-0 border rounded overflow-hidden shadow-sm">
                 <div class="col p-4 d-flex flex-column position-static">
                     <strong class="d-inline-block mb-2 text-primary-emphasis" th:text="${el.date}"></strong>
@@ -51,6 +51,17 @@
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
     }
+</script>
+
+<script>
+    const wishPlates = document.querySelectorAll('div[wishHref]');
+
+    wishPlates.forEach(plate => {
+        plate.addEventListener('click', () => {
+            const url = plate.getAttribute('wishHref');
+            window.location.href = url;
+        });
+    });
 </script>
 
 </html>

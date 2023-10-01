@@ -5,16 +5,15 @@ import com.krokod1lda.wishes.models.Wanty;
 import com.krokod1lda.wishes.repo.PersonRepository;
 import com.krokod1lda.wishes.repo.WantyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class WantyController {
@@ -65,5 +64,34 @@ public class WantyController {
         wantyRepository.save(wanty);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/wanty{wantyId}")
+    public String wantyCard(@PathVariable(value = "wantyId") long wantyId, Model model) {
+        if (!wantyRepository.existsById(wantyId))
+            return "redirect:/";
+
+        model.addAttribute("title", "Карточка запроса");
+
+        Optional<Wanty> wanty = wantyRepository.findById(wantyId);
+        ArrayList<Wanty> res = new ArrayList<>();
+        wanty.ifPresent(res::add);
+        model.addAttribute("wanty", res);
+
+        Person seller = personRepository.findById(res.get(0).getSellerId()).orElseThrow();
+        model.addAttribute("sellerName", seller.getSurname() +
+                " " + seller.getName() + " " + seller.getPatronymic());
+
+        Person buyer = personRepository.findById(res.get(0).getBuyerId()).orElseThrow();
+        model.addAttribute("buyerName", buyer.getSurname() +
+                " " + buyer.getName() + " " + buyer.getPatronymic());
+
+        Person client = personRepository.findById(res.get(0).getClientId()).orElseThrow();
+        model.addAttribute("clientName", client.getSurname() +
+                " " + client.getName() + " " + client.getPatronymic());
+
+        model.addAttribute("isPurchased", wanty.get().isPurchased() ? "был выкуплен" : "не был выкуплен");
+
+        return "wanty-card";
     }
 }
