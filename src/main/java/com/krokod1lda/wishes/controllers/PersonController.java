@@ -68,9 +68,14 @@ public class PersonController {
         map.put("Байеры", buyers);
         map.put("Клиенты", clients);
 
-        for (Map.Entry<String, List<Person>> pair : map.entrySet()) {
-            if (pair.getValue().isEmpty())
-                map.remove(pair.getKey());
+        if (sellers.isEmpty()) {
+            map.remove("Продавцы");
+        }
+        if (buyers.isEmpty()) {
+            map.remove("Байеры");
+        }
+        if (clients.isEmpty()) {
+            map.remove("Клиенты");
         }
 
         model.addAttribute("map", map);

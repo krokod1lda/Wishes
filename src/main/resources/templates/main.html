@@ -14,7 +14,28 @@
 <div th:insert="/blocks/sidebar :: sidebar"></div>
 
 <div class="container mt-3">
-    <h1>Главная страница</h1>
+    <h3>Запросы клиентов</h3>
+    <hr class="my-4">
+
+    <div th:each="el : ${wanties}">
+        <div class="col-md-12 mb-2">
+            <div class="row g-0 border rounded overflow-hidden shadow-sm">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary-emphasis" th:text="${el.date}"></strong>
+                    <h3 class="mb-2" th:text="${el.wantyName}"></h3>
+                    <p class="card-text mb-auto" th:text="${el.description}"></p>
+                    <strong class="d-inline-block mb-2 text-primary-emphasis" th:text="${el.isPurchased ? 'Купили' : 'Не купили'}"></strong>
+                </div>
+
+                <div class="col-auto d-none d-lg-block"> <!--Это нужно будет поменять-->
+                    <svg class="bd-placeholder-img" width="220" height="250" style="float: right">
+                        <rect width="100%" height="100%" fill="#818181"></rect>
+                        <image xlink:href="/test.jpeg" x="0" y="0" width="100%" height="100%"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Футер страницы -->

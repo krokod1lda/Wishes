@@ -25,6 +25,10 @@ public class WantyController {
 
     @GetMapping("/")
     public String home(Model model) {
+
+        Iterable<Wanty> wanties = wantyRepository.findAll();
+
+        model.addAttribute("wanties", wanties);
         model.addAttribute("title", "Главная");
 
         return "main";
