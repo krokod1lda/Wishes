@@ -152,15 +152,16 @@
         reader.readAsDataURL(input.files[0]);
     }
 
-    function checkSelection() {
-        var sellerId = document.getElementById("sellerId").value;
-        if (sellerId === "") {
-            alert("Пожалуйста, выберите одно из значений Продавец.");
-            return false;
-        } else {
-            return true;
-        }
-    }
+    // function checkSelection() {
+    //     var sellerId = document.getElementById("sellerId").value;
+    //     if (sellerId === "") {
+    //         alert("Пожалуйста, выберите одно из значений Продавец.");
+    //         return false;
+    //     } else {
+    //         return true;
+    //     }
+    // }
+
     async function addWanty() {
 
         let formData = new FormData();

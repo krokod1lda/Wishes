@@ -1,10 +1,249 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${title}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
+
 <body>
 
+<!--Боковая панель-->
+<div th:insert="/blocks/sidebar :: sidebar"></div>
+
+<div class="container ">
+    <main>
+        <h4 class="mb-3">Редактирование запроса</h4>
+
+        <hr class="my-4">
+
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-5 order-md-last">
+                <h5 class="mb-3">Добавление фото</h5>
+
+                <div class="card p-2">
+                    <input class="form-control" id="fileUploadId" type="file" name="fileupload"/>
+                    <button class="btn btn-light forButtons mt-1" id="upload-button" onclick="previewImage();">Посмотреть изображение</button>
+                    <img id="image" style="display:none" class="img img-thumbnail">
+                </div>
+            </div>
+
+            <div class="col-md-7 col-lg-7" th:each="el : ${wanty}">
+                <input type="text" th:value="${el.purchased}" id="isPurchasedId" style="display: none">
+                <div class="row g-3">
+
+                    <div id="ID" th:data="${el.id}" style="display: none"></div>
+
+                    <div class="col-12">
+                        <label for="nameId" class="form-label">Название</label>
+                        <input th:value="${el.wantyName}" type="text" class="form-control" id="nameId" placeholder="Название вещи...">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="dateId" class="form-label">Дата</label>
+                        <input th:value="${el.date}" type="date" class="form-control" id="dateId">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="sizeId" class="form-label">Размер</label>
+                        <input th:value="${el.size}" type="text" class="form-control" id="sizeId">
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <div class="row g-3">
+                    <div>
+                        <div class="col-sm-6">
+                            <label for="sellerId" class="form-label">Продавец</label>
+                            <select class="form-select" id="sellerId">
+                                <option th:value="${curSeller.get(0).id}"
+                                        th:text="${curSeller.get(0).surname + ' ' + curSeller.get(0).name + ' ' + curSeller.get(0).patronymic}">
+                                </option>
+
+                                <div th:each="el : ${map.get('sellers')}">
+                                    <option th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="col-sm-6">
+                            <label for="buyerId" class="form-label">Байер</label>
+                            <select class="form-select" id="buyerId">
+                                <option th:value="${curBuyer.get(0).id}"
+                                        th:text="${curBuyer.get(0).surname + ' ' + curBuyer.get(0).name + ' ' + curBuyer.get(0).patronymic}">
+                                </option>
+
+                                <div th:each="el : ${map.get('buyers')}">
+                                    <option th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="col-sm-6">
+                            <label for="clientId" class="form-label">Клиент</label>
+                            <select class="form-select" id="clientId">
+                                <option th:value="${curClient.get(0).id}"
+                                        th:text="${curClient.get(0).surname + ' ' + curClient.get(0).name + ' ' + curClient.get(0).patronymic}">
+                                </option>
+
+                                <div th:each="el : ${map.get('clients')}">
+                                    <option th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="row g-3">
+                    <h5 class="mb-3">Продажа</h5>
+
+                    <div class="my-3">
+                        <div class="form-check">
+                            <input id="notPurchasedId" name="paymentMethod" type="radio" class="form-check-input">
+                            <label class="form-check-label" for="notPurchasedId">Не купили</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input id="purchasedId" name="paymentMethod" type="radio" class="form-check-input">
+                            <label class="form-check-label" for="purchasedId">Купили</label>
+                        </div>
+                    </div>
+
+
+                    <h5>Комментарий</h5>
+                    <div class="my-3">
+                        <textarea id="descriptionId" th:text="${el.description}" name="description" class="form-control" rows="8" maxlength="4000"></textarea>
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" onclick="validateSelect();">Редактировать запрос</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Футер страницы -->
+<footer th:insert="blocks/footer :: footer"></footer>
+
 </body>
+
+<script>
+    // НЕ ПОЛУЧАЕТСЯ РЕАЛИЗОВАТЬ ВЫБОР НУЖНОГО РАДИО БАТТОНА
+
+    // const purch = document.getElementById("isPurchasedId");
+    //
+    // let purchased = document.getElementById("purchasedId");
+    // let notPurchased = document.getElementById("notPurchasedId");
+    //
+    // if(purch.value) {
+    //     purchased.checked = true;
+    //     notPurchased.checked = false;
+    // }
+    // else{
+    //     purchased.checked = false;
+    //     notPurchased.checked = true;
+    // }
+
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+
+    function previewImage() {
+        let input = document.getElementById('fileUploadId');
+        let preview = document.getElementById('image');
+        let reader = new FileReader();
+
+        reader.onload = function() {
+            preview.src = reader.result;
+            preview.style.display = 'block';
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    // function checkSelection() {
+    //     var sellerId = document.getElementById("sellerId").value;
+    //     if (sellerId === "") {
+    //         alert("Пожалуйста, выберите одно из значений Продавец.");
+    //         return false;
+    //     } else {
+    //         return true;
+    //     }
+    // }
+
+    async function updateWanty() {
+        let formData = new FormData();
+
+        const id = document.getElementById('ID').getAttribute('data');
+
+        let name = document.getElementById('nameId');
+        let date = document.getElementById('dateId');
+        let size = document.getElementById('sizeId');
+        let seller = document.getElementById('sellerId');
+        let buyer = document.getElementById('buyerId');
+        let client = document.getElementById('clientId');
+        let isPurchased = document.getElementById('purchasedId').checked;
+        let description = document.getElementById('descriptionId');
+
+        formData.append('name', name.value);
+        formData.append('date', date.value);
+        formData.append('size', size.value);
+        formData.append('seller', seller.value);
+        formData.append('buyer', buyer.value);
+        formData.append('client', client.value);
+        formData.append('isPurchased', isPurchased);
+        formData.append('description', description.value);
+
+        const fetchURL = "/wanty" + id + "/edit";
+
+        await fetch(fetchURL, {
+            method: 'POST',
+            body: formData
+        })
+
+        window.location.replace("/");
+    }
+
+    function validateSelect() {
+        let seller_val = document.getElementById('sellerId').value;
+
+        if (seller_val === "") {
+            alert("Пожалуйста, выберите продавца.");
+            return; // Прервать выполнение функции в случае незаполненного значения
+        }
+
+        let buyer_val = document.getElementById('buyerId').value;
+
+        if (buyer_val === "") {
+            alert("Пожалуйста, выберите байера.");
+            return; // Прервать выполнение функции в случае незаполненного значения
+        }
+
+        let client_val = document.getElementById('clientId').value;
+
+        if (client_val === "") {
+            alert("Пожалуйста, выберите клиента.");
+            return; // Прервать выполнение функции в случае незаполненного значения
+        }
+
+        return updateWanty();
+    }
+</script>
+
 </html>

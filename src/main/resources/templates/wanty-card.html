@@ -21,16 +21,13 @@
 
         <div class="row g-5">
             <div class="col-md-5 col-lg-5 order-md-last">
-                <h5 class="mb-3">Добавление фото</h5>
-
                 <div class="card p-2">
-                    <input class="form-control" id="fileUploadId" type="file" name="fileupload"/>
-                    <button class="btn btn-light forButtons mt-1" id="upload-button">Посмотреть изображение</button>
-                    <img id="image" style="display:none" class="img img-thumbnail">
+                    <img id="image" style="display:none" class="img img-thumbnail" alt="pic)">
                 </div>
             </div>
 
             <div class="col-md-7 col-lg-7" th:each="el : ${wanty}">
+                <input id="wantyId" type="text" th:value="${el.id}" style="display: none;">
                 <div class="row">
 
                     <div class="col-12">
@@ -90,11 +87,11 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3">Редактировать запрос</button>
+                        <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" onclick="editWanty();">Редактировать запрос</button>
                     </div>
 
                     <div class="col-sm-6">
-                        <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3">Удалить запрос</button>
+                        <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" onclick="deleteWanty();">Удалить запрос</button>
                     </div>
                 </div>
             </div>
@@ -114,6 +111,27 @@
 
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
+    }
+
+    async function editWanty() {
+        const wantyId = document.getElementById('wantyId');
+        const URL = "/wanty" + wantyId.value + "/edit";
+
+        await fetch(URL);
+
+        window.location.replace(URL);
+    }
+
+    async function deleteWanty() {
+        const id = document.getElementById('wantyId').value;
+        const fetchURL = "/wanty" + id + "/delete";
+
+        await fetch(fetchURL, {
+            method: 'POST',
+            body: id
+        })
+
+        window.location.replace("/");
     }
 </script>
 

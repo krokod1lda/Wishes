@@ -54,12 +54,12 @@ public class WantyController {
 
     @PostMapping("/add-wanty")
     public String addWanty(@RequestParam("name") String name, @RequestParam("date") String date,
-                           @RequestParam("size") String size, @RequestParam("seller") String sellerId,
-                           @RequestParam("buyer") String buyerId, @RequestParam("client") String clientId,
+                           @RequestParam("size") String size, @RequestParam("seller") long sellerId,
+                           @RequestParam("buyer") long buyerId, @RequestParam("client") long clientId,
                            @RequestParam("isPurchased") boolean isPurchased, @RequestParam("description") String description) {
 
-        Wanty wanty = new Wanty(name, date, size, Integer.parseInt(sellerId), Integer.parseInt(buyerId),
-                Integer.parseInt(clientId), isPurchased, description, null);
+        Wanty wanty = new Wanty(name, date, size, sellerId, buyerId, clientId,
+                isPurchased, description, null);
 
         wantyRepository.save(wanty);
 
@@ -93,5 +93,83 @@ public class WantyController {
         model.addAttribute("isPurchased", wanty.get().isPurchased() ? "был выкуплен" : "не был выкуплен");
 
         return "wanty-card";
+    }
+
+    @GetMapping("/wanty{wantyId}/edit")
+    public String editWanty(@PathVariable("wantyId") long wantyId, Model model) {
+        if (!wantyRepository.existsById(wantyId))
+            return "redirect:/";
+
+        model.addAttribute("title", "Редактирование запроса");
+
+        Optional<Wanty> wanty = wantyRepository.findById(wantyId);
+        List<Wanty> res = new ArrayList<>();
+        wanty.ifPresent(res::add);
+        model.addAttribute("wanty", res);
+
+        Optional<Person> curSeller = personRepository.findById(res.get(0).getSellerId());
+        List<Person> currentSeller = new ArrayList<>();
+        curSeller.ifPresent(currentSeller::add);
+        model.addAttribute("curSeller", currentSeller);
+
+        Optional<Person> curBuyer = personRepository.findById(res.get(0).getBuyerId());
+        List<Person> currentBuyer = new ArrayList<>();
+        curBuyer.ifPresent(currentBuyer::add);
+        model.addAttribute("curBuyer", currentBuyer);
+
+        Optional<Person> curClient = personRepository.findById(res.get(0).getClientId());
+        List<Person> currentClient = new ArrayList<>();
+        curClient.ifPresent(currentClient::add);
+        model.addAttribute("curClient", currentClient);
+
+        List<Person> sellers = personRepository.findByType("seller");
+        sellers.remove(curSeller.get());
+
+        List<Person> buyers = personRepository.findByType("buyer");
+        buyers.remove(curBuyer.get());
+
+        List<Person> clients = personRepository.findByType("client");
+        clients.remove(curClient.get());
+
+        Map<String, List<Person>> people = new HashMap<>();
+
+        people.put("sellers", sellers);
+        people.put("buyers", buyers);
+        people.put("clients", clients);
+
+        model.addAttribute("map", people);
+
+        return "edit-wanty";
+    }
+
+    @PostMapping("/wanty{wantyId}/edit")
+    public String editWanty(@PathVariable("wantyId") long wantyId, @RequestParam("name") String name,
+                            @RequestParam("date") String date, @RequestParam("size") String size,
+                            @RequestParam("seller") long sellerId, @RequestParam("buyer") long buyerId,
+                            @RequestParam("client") long clientId, @RequestParam("isPurchased") boolean isPurchased,
+                            @RequestParam("description") String description) {
+
+        Wanty wanty = wantyRepository.findById(wantyId).orElseThrow();
+
+        wanty.setWantyName(name);
+        wanty.setDate(date);
+        wanty.setSize(size);
+        wanty.setSellerId(sellerId);
+        wanty.setBuyerId(buyerId);
+        wanty.setClientId(clientId);
+        wanty.setPurchased(isPurchased);
+        wanty.setDescription(description);
+
+        wantyRepository.save(wanty);
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/wanty{wantyId}/delete")
+    public String deleteWanty(@PathVariable("wantyId") long wantyId) {
+        Wanty wanty = wantyRepository.findById(wantyId).orElseThrow();
+        wantyRepository.delete(wanty);
+
+        return "redirect:/";
     }
 }
