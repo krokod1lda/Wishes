@@ -1,6 +1,34 @@
 .forTables {
     border: 1px solid #ced4da;
-}a
+}
+
+.forSearchButton {
+    border-color: #ced4da;
+    color: #818181;
+}
+
+.forDropdowns {
+    width: 100%;
+    background-color: white;
+    border-color: #ced4da;
+    color: #818181;
+}
+
+.forDropdowns:hover {
+    color: white;
+    background-color: #818181;
+    border-color: #818181;
+}
+
+.forDropdowns[aria-expanded="true"] {
+    color: white;
+    background-color: #818181;
+    border-color: #818181;
+}
+
+.dropdown-item:active {
+    background-color: #818181;
+}
 
 .forButtons {
     font-size: medium;
