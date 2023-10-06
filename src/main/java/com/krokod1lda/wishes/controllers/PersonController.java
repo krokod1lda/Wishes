@@ -1,7 +1,7 @@
 package com.krokod1lda.wishes.controllers;
 
 import com.krokod1lda.wishes.models.Person;
-import com.krokod1lda.wishes.repo.PersonRepository;
+import com.krokod1lda.wishes.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

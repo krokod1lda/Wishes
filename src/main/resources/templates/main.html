@@ -15,9 +15,24 @@
 
 <div class="container mt-3">
     <h3>Запросы клиентов</h3>
+
     <hr class="my-4">
 
-    <div th:each="el : ${wanties}" >
+    <form action="search" method="get">
+        <h3>Поиск по названию запроса</h3>
+
+        <div class="row">
+            <div class="col-sm-5">
+                <input id="searchQuery" name="query" class="form-control" type="text" placeholder="Введите запрос" aria-label="Search">
+            </div>
+
+            <div class="col">
+                <button class="btn btn-light forButtons" type="submit">Найти</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="mt-4" th:each="el : ${wanties}" >
         <div th:wishHref="'wanty' + ${el.id}" class="col-md-12 mb-2" style="cursor: pointer">
             <div class="row g-0 border rounded overflow-hidden shadow-sm">
                 <div class="col p-4 d-flex flex-column position-static">
