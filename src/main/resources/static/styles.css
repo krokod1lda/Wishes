@@ -12,6 +12,11 @@
     background-color: white;
     border-color: #ced4da;
     color: #818181;
+    /*Ниже для отображения в случае длинного текста*/
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .forDropdowns:hover {

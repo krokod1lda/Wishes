@@ -57,7 +57,6 @@ public class PersonController {
     @GetMapping("/all-persons")
     public String allPersons(Model model) {
 
-
         List<Person> sellers = personRepository.findByType("seller");
         List<Person> buyers = personRepository.findByType("buyer");
         List<Person> clients = personRepository.findByType("client");
@@ -101,7 +100,7 @@ public class PersonController {
     }
 
     @PostMapping("/person{id}")
-    public String updatePerson(@RequestParam("id") long id, @RequestParam("name") String name,
+    public String updatePerson(@PathVariable("id") long id, @RequestParam("name") String name,
                                @RequestParam("patronymic") String patronymic, @RequestParam("surname") String surname) {
 
         Person person = personRepository.findById(id).orElseThrow();
@@ -121,5 +120,19 @@ public class PersonController {
         personRepository.deleteById(id);
 
         return "redirect:/all-persons";
+    }
+
+    public static Map<String, List<Person>> getAllThePeople(PersonRepository personRepository) {
+        List<Person> sellers = personRepository.findByType("seller");
+        List<Person> buyers = personRepository.findByType("buyer");
+        List<Person> clients = personRepository.findByType("client");
+
+        Map<String, List<Person>> people = new HashMap<>();
+
+        people.put("sellers", sellers);
+        people.put("buyers", buyers);
+        people.put("clients", clients);
+
+        return people;
     }
 }

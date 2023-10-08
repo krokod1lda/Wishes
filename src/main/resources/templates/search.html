@@ -8,29 +8,58 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 
-<body>
+<body onload="disableElements()">
 
 <!--Боковая панель-->
 <div th:insert="/blocks/sidebar :: sidebar"></div>
 
 <div class="container mt-3">
-    <h3>Запросы клиентов</h3>
+    <h3>
+        <a href="/" class="nav-link link-body-emphasis">Запросы клиентов</a>
+    </h3>
 
     <hr class="my-4">
 
-    <form action="search" method="get">
-        <h5>Поиск по названию запроса</h5>
-
-        <div class="row">
-            <div class="col-sm-5">
-                <input id="searchQue ry" th:value="${query}" name="query" class="form-control" type="text" placeholder="Введите запрос" aria-label="Search">
-            </div>
-
-            <div class="col">
-                <button class="btn btn-light forSearchButton" type="submit">Найти</button>
-            </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <input id="queryId" th:value="${query}" name="query" class="form-control" type="text"
+                   placeholder="Поиск по названию запроса" aria-label="Search" oninput="disableElements()">
         </div>
-    </form>
+
+        <div class="col">
+            <select class="form-select" id="clientId" onchange="disableElements()">
+                <option value="0">Клиент</option>
+
+                <div th:each="el : ${map.get('clients')}">
+                    <option th:value="${el.id}" th:selected="${personId == el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}" ></option>
+                </div>
+            </select>
+        </div>
+
+        <div class="col">
+            <select class="form-select" id="buyerId" onchange="disableElements()">
+                <option value="0">Байер</option>
+
+                <div th:each="el : ${map.get('buyers')}">
+                    <option th:value="${el.id}" th:selected="${personId == el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}" ></option>
+                </div>
+            </select>
+        </div>
+
+        <div class="col">
+            <select class="form-select" id="sellerId" onchange="disableElements()">
+                <option value="0">Продавец</option>
+
+                <div th:each="el : ${map.get('sellers')}">
+                    <option th:value="${el.id}" th:selected="${personId == el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}" ></option>
+                </div>
+            </select>
+        </div>
+
+        <div class="col">
+            <button class="btn btn-light forSearchButton" type="submit" onclick="search()">Найти</button>
+        </div>
+    </div>
 
     <div class="mt-4" th:each="el : ${results}" >
         <div th:wishHref="'wanty' + ${el.id}" class="col-md-12 mb-2" style="cursor: pointer">
@@ -66,7 +95,70 @@
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
     }
+
+    function search() {
+        const query = document.getElementById("queryId").value;
+        const buyerId = document.getElementById("buyerId").value;
+        const sellerId = document.getElementById("sellerId").value;
+        const clientId = document.getElementById("clientId").value;
+
+        let url;
+
+        if(query || buyerId != '0' || sellerId != '0' || clientId != '0') {
+            url = query ? '/searchByQuery?query=' + query :
+                '/searchByPerson?buyerId=' + buyerId + '&sellerId=' + sellerId + '&clientId=' + clientId;
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200)
+                    var response = xhr.responseText;
+            };
+
+            xhr.send();
+
+            window.location.replace(url);
+        }
+        else
+            window.location.replace("/");
+    }
+
+    function disableElements() {
+        const input = document.getElementById("queryId");
+        const clientSelect = document.getElementById("clientId");
+        const buyerSelect = document.getElementById("buyerId");
+        const sellerSelect = document.getElementById("sellerId");
+
+        if (input.value)
+            disable(clientSelect, buyerSelect, sellerSelect);
+        else if (clientSelect.value != "0")
+            disable(input, buyerSelect, sellerSelect);
+        else if (buyerSelect.value != "0")
+            disable(clientSelect, input, sellerSelect);
+        else if (sellerSelect.value != "0")
+            disable(clientSelect, buyerSelect, input);
+        else
+            enable(input, clientSelect, buyerSelect, sellerSelect);
+    }
+
+    function disable(el1, el2, el3) {
+        el1.disabled = true;
+        el2.disabled = true;
+        el3.disabled = true;
+    }
+
+    function enable(el1, el2, el3, el4) {
+        el1.disabled = false;
+        el2.disabled = false;
+        el3.disabled = false;
+        el4.disabled = false;
+    }
 </script>
+
+
 
 <script>
     const wishPlates = document.querySelectorAll('div[wishHref]');

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
+import static com.krokod1lda.wishes.controllers.PersonController.getAllThePeople;
+
 @Controller
 public class WantyController {
     @Autowired
@@ -23,11 +25,12 @@ public class WantyController {
 
     @GetMapping("/")
     public String home(Model model) {
+        model.addAttribute("title", "Главная");
 
         Iterable<Wanty> wanties = wantyRepository.findAll();
 
         model.addAttribute("wanties", wanties);
-        model.addAttribute("title", "Главная");
+        model.addAttribute("map", getAllPeople());
 
         return "main";
     }
@@ -36,17 +39,7 @@ public class WantyController {
     public String addWanty(Model model) {
         model.addAttribute("title", "Добавление запроса");
 
-        List<Person> sellers = personRepository.findByType("seller");
-        List<Person> buyers = personRepository.findByType("buyer");
-        List<Person> clients = personRepository.findByType("client");
-
-        Map<String, List<Person>> people = new HashMap<>();
-
-        people.put("sellers", sellers);
-        people.put("buyers", buyers);
-        people.put("clients", clients);
-
-        model.addAttribute("map", people);
+        model.addAttribute("map", getAllPeople());
 
         return "add-wanty";
     }
@@ -150,14 +143,8 @@ public class WantyController {
 
         Wanty wanty = wantyRepository.findById(wantyId).orElseThrow();
 
-        wanty.setWantyName(name);
-        wanty.setDate(date);
-        wanty.setSize(size);
-        wanty.setSellerId(sellerId);
-        wanty.setBuyerId(buyerId);
-        wanty.setClientId(clientId);
-        wanty.setPurchased(isPurchased);
-        wanty.setDescription(description);
+        wanty.update(name, date, size, sellerId, buyerId,
+                clientId, isPurchased, description, null);
 
         wantyRepository.save(wanty);
 
@@ -170,5 +157,9 @@ public class WantyController {
         wantyRepository.delete(wanty);
 
         return "redirect:/";
+    }
+
+    public Map<String, List<Person>> getAllPeople () {
+        return getAllThePeople(personRepository);
     }
 }

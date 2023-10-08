@@ -21,12 +21,10 @@
 
         <div class="row g-5">
             <div class="col-md-5 col-lg-5 order-md-last">
-                <h5 class="mb-3">Добавление фото</h5>
-
                 <div class="card p-2">
+                    <img id="image" src="/test.jpeg" class="img img-thumbnail" alt="pic)">
                     <input class="form-control" id="fileUploadId" type="file" name="fileupload"/>
                     <button class="btn btn-light forButtons mt-1" id="upload-button" onclick="previewImage();">Посмотреть изображение</button>
-                    <img id="image" style="display:none" class="img img-thumbnail">
                 </div>
             </div>
 
@@ -211,13 +209,14 @@
         formData.append('description', description.value);
 
         const fetchURL = "/wanty" + id + "/edit";
+        const replaceURL = "/wanty" + id;
 
         await fetch(fetchURL, {
             method: 'POST',
             body: formData
         })
 
-        window.location.replace("/");
+        window.location.replace(replaceURL);
     }
 
     function validateSelect() {
