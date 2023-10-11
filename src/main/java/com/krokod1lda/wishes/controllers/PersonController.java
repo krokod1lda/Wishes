@@ -122,6 +122,13 @@ public class PersonController {
         return "redirect:/all-persons";
     }
 
+    @GetMapping("/statistics")
+    public String statistics(Model model) {
+
+        model.addAttribute("title", "Статистика");
+        return "statistics";
+    }
+
     public static Map<String, List<Person>> getAllThePeople(PersonRepository personRepository) {
         List<Person> sellers = personRepository.findByType("seller");
         List<Person> buyers = personRepository.findByType("buyer");

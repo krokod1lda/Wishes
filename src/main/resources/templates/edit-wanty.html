@@ -107,12 +107,12 @@
 
                     <div class="my-3">
                         <div class="form-check">
-                            <input id="notPurchasedId" name="paymentMethod" type="radio" class="form-check-input">
+                            <input id="notPurchasedId" name="paymentMethod" type="radio" class="form-check-input" th:checked="${!el.isPurchased()}">
                             <label class="form-check-label" for="notPurchasedId">Не купили</label>
                         </div>
 
                         <div class="form-check">
-                            <input id="purchasedId" name="paymentMethod" type="radio" class="form-check-input">
+                            <input id="purchasedId" name="paymentMethod" type="radio" class="form-check-input" th:checked="${el.isPurchased()}">
                             <label class="form-check-label" for="purchasedId">Купили</label>
                         </div>
                     </div>
