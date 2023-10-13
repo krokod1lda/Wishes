@@ -120,6 +120,7 @@ public class Wanty {
 
     public void update (String wantyName, String date, String size, long sellerId, long buyerId,
                         long clientId, boolean isPurchased, String description, byte[] wantyPhoto) {
+
         this.wantyName = wantyName;
         this.date = date;
         this.size = size;

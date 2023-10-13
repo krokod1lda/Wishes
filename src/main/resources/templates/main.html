@@ -24,54 +24,6 @@
                    placeholder="Поиск по названию запроса" oninput="disableElements()" aria-label="Search">
         </div>
 
-<!--            <div class="col-sm-2">-->
-<!--                <div class="dropdown">-->
-<!--                    <button class="btn dropdown-toggle forDropdowns" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                        Байер</button>-->
-
-<!--                    <ul th:id="buyerId" class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="margin-top: 4%;">-->
-<!--                        <li><a class="dropdown-item" value=0 onclick="selectDropdownItemBuyer('Байер')">Не выбрано</a></li>-->
-
-<!--                        <div th:each="el : ${map.get('buyers')}">-->
-<!--                            <li><a class="dropdown-item" th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}"-->
-<!--                                   th:attr="onclick=|selectDropdownItemBuyer('${el.surname}')|"></a></li>-->
-<!--                        </div>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="col-sm-2">-->
-<!--                <div class="dropdown">-->
-<!--                    <button class="btn dropdown-toggle forDropdowns" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                        Продавец</button>-->
-
-<!--                    <ul class="dropdown-menu" id="sellerId" aria-labelledby="dropdownMenuButton2" style="margin-top: 4%;">-->
-<!--                        <li><a class="dropdown-item" value=0 onclick="selectDropdownItemSeller('Продавец')">Не выбрано</a></li>-->
-
-<!--                        <div th:each="el : ${map.get('sellers')}">-->
-<!--                            <li><a class="dropdown-item" th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}"-->
-<!--                                   th:attr="onclick=|selectDropdownItemSeller('${el.surname}')|"></a></li>-->
-<!--                        </div>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="col-sm-2">-->
-<!--                <div class="dropdown">-->
-<!--                    <button class="btn dropdown-toggle forDropdowns" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                        Клиент</button>-->
-
-<!--                    <ul class="dropdown-menu" id="clientId" aria-labelledby="dropdownMenuButton3" style="margin-top: 4%;">-->
-<!--                        <li><a class="dropdown-item" value=0 onclick="selectDropdownItemClient('Клиент')">Не выбрано</a></li>-->
-
-<!--                        <div th:each="el : ${map.get('clients')}">-->
-<!--                            <li><a class="dropdown-item" th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}"-->
-<!--                                   th:attr="onclick=|selectDropdownItemClient('${el.surname}')|"></a></li>-->
-<!--                        </div>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-
         <div class="col">
             <select class="form-select" id="clientId" onchange="disableElements()">
                 <option value="0">Клиент</option>
@@ -202,21 +154,6 @@
         el3.disabled = false;
         el4.disabled = false;
     }
-
-    // function selectDropdownItemBuyer(item) {
-    //     var button = document.getElementById("dropdownMenuButton1");
-    //     button.innerText = item;
-    // }
-    //
-    // function selectDropdownItemSeller(item) {
-    //     var button = document.getElementById("dropdownMenuButton2");
-    //     button.innerText = item;
-    // }
-    //
-    // function selectDropdownItemClient(item) {
-    //     var button = document.getElementById("dropdownMenuButton3");
-    //     button.innerText = item;
-    // }
 </script>
 
 <script>

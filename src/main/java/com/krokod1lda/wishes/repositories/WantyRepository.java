@@ -5,14 +5,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface WantyRepository extends CrudRepository<Wanty, Long> {
     @Query(value = "select * from wanty where wanty_name like %:wantyName%",
             nativeQuery = true)
-    List<Wanty> findByWantyName(@Param("wantyName")String wantyName);
-
-    List<Wanty> findByBuyerId(long buyerId);
-    List<Wanty> findBySellerId(long sellerId);
-    List<Wanty> findByClientId(long clientId);
+    ArrayList<Wanty> findByWantyName(@Param("wantyName")String wantyName);
+    ArrayList<Wanty> findByBuyerId(long buyerId);
+    ArrayList<Wanty> findBySellerId(long sellerId);
+    ArrayList<Wanty> findByClientId(long clientId);
+    boolean existsBySellerIdOrBuyerIdOrClientId(long sellerId, long buyerId, long clientId);
 }

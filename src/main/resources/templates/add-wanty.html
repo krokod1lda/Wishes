@@ -60,7 +60,9 @@
                                 <option value="">Выберите...</option>
 
                                 <div th:each="el : ${map.get('sellers')}">
-                                    <option th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
+                                    <option th:value="${el.id}"
+                                            th:text="${el.archived ? '(Архив) ' + el.surname + ' ' + el.name + ' ' + el.patronymic :
+                                            el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
                                 </div>
                             </select>
                         </div>
@@ -73,7 +75,9 @@
                                 <option value="">Выберите...</option>
 
                                 <div th:each="el : ${map.get('buyers')}">
-                                    <option th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
+                                    <option th:value="${el.id}"
+                                            th:text="${el.archived ? '(Архив) ' + el.surname + ' ' + el.name + ' ' + el.patronymic :
+                                            el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
                                 </div>
                             </select>
                         </div>
@@ -86,7 +90,9 @@
                                 <option value="">Выберите...</option>
 
                                 <div th:each="el : ${map.get('clients')}">
-                                    <option th:value="${el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}" ></option>
+                                    <option th:value="${el.id}"
+                                            th:text="${el.archived ? '(Архив) ' + el.surname + ' ' + el.name + ' ' + el.patronymic :
+                                            el.surname + ' ' + el.name + ' ' + el.patronymic}" ></option>
                                 </div>
                             </select>
                         </div>
@@ -152,16 +158,6 @@
         reader.readAsDataURL(input.files[0]);
     }
 
-    // function checkSelection() {
-    //     var sellerId = document.getElementById("sellerId").value;
-    //     if (sellerId === "") {
-    //         alert("Пожалуйста, выберите одно из значений Продавец.");
-    //         return false;
-    //     } else {
-    //         return true;
-    //     }
-    // }
-
     async function addWanty() {
 
         let formData = new FormData();
@@ -193,25 +189,31 @@
     }
 
     function validateSelect() {
+        let name_val = document.getElementById('nameId').value;
+        if (name_val === "") {
+            alert("Пожалуйста, введите название");
+            return;
+        }
+
         let seller_val = document.getElementById('sellerId').value;
 
         if (seller_val === "") {
-            alert("Пожалуйста, выберите продавца.");
-            return; // Прервать выполнение функции в случае незаполненного значения
+            alert("Пожалуйста, выберите продавца");
+            return;
         }
 
         let buyer_val = document.getElementById('buyerId').value;
 
         if (buyer_val === "") {
-            alert("Пожалуйста, выберите байера.");
-            return; // Прервать выполнение функции в случае незаполненного значения
+            alert("Пожалуйста, выберите байера");
+            return;
         }
 
         let client_val = document.getElementById('clientId').value;
 
         if (client_val === "") {
-            alert("Пожалуйста, выберите клиента.");
-            return; // Прервать выполнение функции в случае незаполненного значения
+            alert("Пожалуйста, выберите клиента");
+            return;
         }
 
         return addWanty();

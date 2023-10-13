@@ -15,12 +15,14 @@ public class Person {
     private String name;
     private String surname;
     private String patronymic;
+    private boolean isArchived;
 
     public Person(String type, String name, String surname, String patronymic) {
         this.type = type;
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
+        this.isArchived = false;
     }
 
     public Person() {}
@@ -63,5 +65,13 @@ public class Person {
 
     public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;
+    }
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
     }
 }
