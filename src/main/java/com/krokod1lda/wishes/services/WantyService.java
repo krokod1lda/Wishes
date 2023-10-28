@@ -15,9 +15,8 @@ public class WantyService {
     private WantyRepository wantyRepository;
 
     public Iterable<Wanty> getAllTheWanties () {
-        Iterable<Wanty> wanties = wantyRepository.findAll();
 
-        return wanties;
+        return wantyRepository.findAll();
     }
 
     public void addWanty (String name, String date, String size, long sellerId,
@@ -38,27 +37,23 @@ public class WantyService {
     }
 
     public ArrayList<Wanty> getWanty (String wantyName) {
-        ArrayList<Wanty> wishes = wantyRepository.findByWantyName(wantyName);
 
-        return wishes;
+        return wantyRepository.findByWantyName(wantyName);
     }
 
     public List<Wanty> getWishesByBuyer (long personId) {
-        List<Wanty> wishes = wantyRepository.findByBuyerId(personId);
 
-        return wishes;
+        return wantyRepository.findByBuyerId(personId);
     }
 
     public List<Wanty> getWishesBySeller (long personId) {
-        List<Wanty> wishes = wantyRepository.findBySellerId(personId);
 
-        return wishes;
+        return wantyRepository.findBySellerId(personId);
     }
 
     public List<Wanty> getWishesByClient (long personId) {
-        List<Wanty> wishes = wantyRepository.findByClientId(personId);
 
-        return wishes;
+        return wantyRepository.findByClientId(personId);
     }
 
     public void updateWanty (long wantyId, String name, String date, String size, long sellerId,

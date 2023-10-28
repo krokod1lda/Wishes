@@ -15,6 +15,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
+enum WantyAttributes {
+    TITLE("title"),
+    MAP("map"),
+    WANTY("wanty");
+
+    private final String value;
+
+    WantyAttributes(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+}
 
 @Controller
 public class WantyController {
@@ -27,18 +42,18 @@ public class WantyController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("title", "Главная");
+        model.addAttribute(WantyAttributes.TITLE.getValue(), "Главная");
         model.addAttribute("wanties", wantyService.getAllTheWanties());
-        model.addAttribute("map", personService.getAllThePeople());
+        model.addAttribute(WantyAttributes.MAP.getValue(), personService.getAllThePeople());
 
         return "main";
     }
 
     @GetMapping("/add-wanty")
     public String addWanty(Model model) {
-        model.addAttribute("title", "Добавление запроса");
+        model.addAttribute(WantyAttributes.TITLE.getValue(), "Добавление запроса");
 
-        model.addAttribute("map", personService.getAllThePeople());
+        model.addAttribute(WantyAttributes.MAP.getValue(), personService.getAllThePeople());
 
         return "add-wanty";
     }
@@ -55,12 +70,12 @@ public class WantyController {
     }
 
     // NEED TO REFACTOR THIS METHOD
-    @GetMapping("/wanty{wantyId}")
+    @GetMapping("/wanty/{wantyId}")
     public String wantyCard(@PathVariable(value = "wantyId") long wantyId, Model model) {
-        model.addAttribute("title", "Карточка запроса");
+        model.addAttribute(WantyAttributes.TITLE.getValue(), "Карточка запроса");
 
         ArrayList<Wanty> wanty = wantyService.getWanty(wantyId);
-        model.addAttribute("wanty", wanty);
+        model.addAttribute(WantyAttributes.WANTY.getValue(), wanty);
 
         model.addAttribute("sellerName", personService.getPersonFullName(wanty.get(0).getSellerId()));
 
@@ -68,18 +83,18 @@ public class WantyController {
 
         model.addAttribute("clientName", personService.getPersonFullName(wanty.get(0).getClientId()));
 
-        model.addAttribute("isPurchased", wanty.get(0).isPurchased() ? "был выкуплен" : "не был выкуплен");
+        model.addAttribute("isPurchased", wanty.get(0).isPurchased() ? "был куплен" : "не был куплен");
 
         return "wanty-card";
     }
 
     // NEED TO REFACTOR THIS METHOD TOO
-    @GetMapping("/wanty{wantyId}/edit")
+    @GetMapping("/wanty/{wantyId}/edit")
     public String editWanty(@PathVariable("wantyId") long wantyId, Model model) {
-        model.addAttribute("title", "Редактирование запроса");
+        model.addAttribute(WantyAttributes.TITLE.getValue(), "Редактирование запроса");
 
         List<Wanty> wanty = wantyService.getWanty(wantyId);
-        model.addAttribute("wanty", wanty);
+        model.addAttribute(WantyAttributes.WANTY.getValue(), wanty);
 
         List<Person> curSeller = personService.getPersonAsList(wanty.get(0).getSellerId());
         List<Person> curBuyer = personService.getPersonAsList(wanty.get(0).getBuyerId());
@@ -89,13 +104,13 @@ public class WantyController {
         model.addAttribute("curBuyer", curBuyer);
         model.addAttribute("curClient", curClient);
 
-        model.addAttribute("map",
+        model.addAttribute(WantyAttributes.MAP.getValue(),
                 personService.removeCurrents(curSeller.get(0), curBuyer.get(0), curClient.get(0)));
 
         return "edit-wanty";
     }
 
-    @PostMapping("/wanty{wantyId}/edit")
+    @PostMapping("/wanty/{wantyId}/edit")
     public String editWanty(@PathVariable("wantyId") long wantyId, @RequestParam("name") String name,
                             @RequestParam("date") String date, @RequestParam("size") String size,
                             @RequestParam("seller") long sellerId, @RequestParam("buyer") long buyerId,

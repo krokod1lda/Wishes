@@ -115,7 +115,7 @@
 
     async function editWanty() {
         const wantyId = document.getElementById('wantyId');
-        const URL = "/wanty" + wantyId.value + "/edit";
+        const URL = "/wanty/" + wantyId.value + "/edit";
 
         await fetch(URL);
 

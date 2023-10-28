@@ -9,6 +9,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+enum PersonAttributes {
+    ROLE("role"),
+    TITLE("title"),
+    TYPE("type"),
+    TITLE_ADDING_SELLER("Добавление продавца"), ROLE_SELLER("продавца"), TYPE_SELLER("seller"),
+    TITLE_ADDING_BUYER("Добавление байера"), ROLE_BUYER("байера"), TYPE_BUYER("buyer"),
+    TITLE_ADDING_CLIENT("Добавление клиента"),  ROLE_CLIENT("клиента"), TYPE_CLIENT("client"),
+    MAP("map"),
+    TITLE_ALL_PARTICIPANTS("Все участники"),
+    PERSON("person"),
+    ID("id"),
+    EDITING_PARTICIPANT("Редактирование участника"),
+    EDITING_ARCHIVED_PARTICIPANT("Редактирование архивированного участника"),
+    STATISTICS("Статистика");
+
+    private final String value;
+
+    PersonAttributes(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+}
+
 @Controller
 public class PersonController {
     @Autowired
@@ -16,62 +42,86 @@ public class PersonController {
 
     @GetMapping("/add-seller")
     public String addSeller(Model model) {
-        model.addAttribute("title", "Добавление продавца");
-        model.addAttribute("role", "продавца");
-        model.addAttribute("type", "seller");
+        model.addAttribute(PersonAttributes.TITLE.getValue(), PersonAttributes.TITLE_ADDING_SELLER.getValue());
+        model.addAttribute(PersonAttributes.ROLE.getValue(),  PersonAttributes.ROLE_SELLER.getValue());
+        model.addAttribute(PersonAttributes.TYPE.getValue(), PersonAttributes.TYPE_SELLER.getValue());
 
         return "add-person";
     }
 
     @GetMapping("/add-buyer")
     public String addBuyer(Model model) {
-        model.addAttribute("title", "Добавление байера");
-        model.addAttribute("role", "байера");
-        model.addAttribute("type", "buyer");
+        model.addAttribute(PersonAttributes.TITLE.getValue(), PersonAttributes.TITLE_ADDING_BUYER.getValue());
+        model.addAttribute(PersonAttributes.ROLE.getValue(),  PersonAttributes.ROLE_BUYER.getValue());
+        model.addAttribute(PersonAttributes.TYPE.getValue(), PersonAttributes.TYPE_BUYER.getValue());
 
         return "add-person";
     }
 
     @GetMapping("/add-client")
     public String addClient(Model model) {
-        model.addAttribute("title", "Добавление клиента");
-        model.addAttribute("role", "клиента");
-        model.addAttribute("type", "client");
+        model.addAttribute(PersonAttributes.TITLE.getValue(), PersonAttributes.TITLE_ADDING_CLIENT.getValue());
+        model.addAttribute(PersonAttributes.ROLE.getValue(),  PersonAttributes.ROLE_CLIENT.getValue());
+        model.addAttribute(PersonAttributes.TYPE.getValue(), PersonAttributes.TYPE_CLIENT.getValue());
 
         return "add-person";
     }
 
     @PostMapping("/addPerson")
     public String addPerson(@RequestParam("type") String type, @RequestParam("name") String name,
-                            @RequestParam("patronymic") String patronymic, @RequestParam("surname") String surname) {
+                           @RequestParam("surname") String surname) {
 
-        personService.addPerson(type, name, patronymic, surname);
+        personService.addPerson(type, name, surname);
 
         return "redirect:/";
     }
 
     @GetMapping("/all-persons")
     public String allPersons(Model model) {
-        model.addAttribute("map", personService.getPeopleMapForAllPersonsPage());
-        model.addAttribute("title", "Все участники");
+        model.addAttribute(PersonAttributes.MAP.getValue(), personService.getPeopleMapForAllPersonsPage());
+        model.addAttribute(PersonAttributes.TITLE.getValue(), PersonAttributes.TITLE_ALL_PARTICIPANTS.getValue());
 
         return "all-persons";
     }
 
-    @GetMapping("/person{id}")
-    public String updatePerson(@PathVariable(value = "id") long id, Model model) {
-        model.addAttribute("person", personService.updatePerson(id));
-        model.addAttribute("title", "Редактирование участника");
-        model.addAttribute("id", id);
+    @GetMapping("/person/{id}")
+    public String updatePerson(@PathVariable("id") long id, Model model) {
+        model.addAttribute(PersonAttributes.PERSON.getValue(), personService.updatePerson(id));
+        model.addAttribute(PersonAttributes.TITLE.getValue(), PersonAttributes.EDITING_PARTICIPANT.getValue());
+        model.addAttribute(PersonAttributes.ID.getValue(), id);
 
         return "edit-person";
     }
 
-    @PostMapping("/person{id}")
+    @PostMapping("/person/{id}")
     public String updatePerson(@PathVariable("id") long id, @RequestParam("name") String name,
-                               @RequestParam("patronymic") String patronymic, @RequestParam("surname") String surname) {
+                               @RequestParam("surname") String surname) {
 
-        personService.updatePerson(id, name, patronymic, surname);
+        personService.updatePerson(id, name, surname);
+
+        return "redirect:/all-persons";
+    }
+
+    @GetMapping("/archived/{id}")
+    public String archivedPerson(@PathVariable("id") long id, Model model) {
+        model.addAttribute(PersonAttributes.PERSON.getValue(), personService.updatePerson(id));
+        model.addAttribute(PersonAttributes.TITLE.getValue(), PersonAttributes.EDITING_ARCHIVED_PARTICIPANT.getValue());
+        model.addAttribute(PersonAttributes.ID.getValue(), id);
+
+        return "edit-archived-person";
+    }
+
+    @PostMapping("/archivePerson")
+    public String archivePerson(@RequestParam("id") long id) {
+        personService.archivePerson(id);
+
+        return "redirect:/all-persons";
+    }
+
+
+    @PostMapping("unarchivePerson")
+    public String unarchivePerson(@RequestParam("id") long id) {
+        personService.unarchivePerson(id);
 
         return "redirect:/all-persons";
     }
@@ -85,7 +135,7 @@ public class PersonController {
 
     @GetMapping("/statistics")
     public String statistics(Model model) {
-        model.addAttribute("title", "Статистика");
+        model.addAttribute(PersonAttributes.TITLE.getValue(), PersonAttributes.STATISTICS.getValue());
 
         return "statistics";
     }

@@ -1,6 +1,8 @@
 package com.krokod1lda.wishes.repositories;
 
 import com.krokod1lda.wishes.models.Wanty;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +17,9 @@ public interface WantyRepository extends CrudRepository<Wanty, Long> {
     ArrayList<Wanty> findBySellerId(long sellerId);
     ArrayList<Wanty> findByClientId(long clientId);
     boolean existsBySellerIdOrBuyerIdOrClientId(long sellerId, long buyerId, long clientId);
+    @Transactional
+    @Modifying
+    @Query(value = "delete from wanty where seller_id = :id or buyer_id = :id or client_id = :id",
+            nativeQuery = true)
+    void deleteAllTheWantiesByPersonId(@Param("id") long id);
 }

@@ -31,7 +31,8 @@
                 <option value="0">Клиент</option>
 
                 <div th:each="el : ${map.get('clients')}">
-                    <option th:value="${el.id}" th:selected="${personId == el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}" ></option>
+                    <option th:value="${el.id}" th:selected="${personId == el.id}"
+                            th:text="${el.surname + ' ' + el.name}" ></option>
                 </div>
             </select>
         </div>
@@ -41,7 +42,7 @@
                 <option value="0">Байер</option>
 
                 <div th:each="el : ${map.get('buyers')}">
-                    <option th:value="${el.id}" th:selected="${personId == el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}" ></option>
+                    <option th:value="${el.id}" th:selected="${personId == el.id}" th:text="${el.surname + ' ' + el.name}" ></option>
                 </div>
             </select>
         </div>
@@ -51,7 +52,7 @@
                 <option value="0">Продавец</option>
 
                 <div th:each="el : ${map.get('sellers')}">
-                    <option th:value="${el.id}" th:selected="${personId == el.id}" th:text="${el.surname + ' ' + el.name + ' ' + el.patronymic}" ></option>
+                    <option th:value="${el.id}" th:selected="${personId == el.id}" th:text="${el.surname + ' ' + el.name}" ></option>
                 </div>
             </select>
         </div>

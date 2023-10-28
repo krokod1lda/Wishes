@@ -1,6 +1,7 @@
 package com.krokod1lda.wishes.services;
 
 import com.krokod1lda.wishes.models.Person;
+import com.krokod1lda.wishes.models.Wanty;
 import com.krokod1lda.wishes.repositories.PersonRepository;
 import com.krokod1lda.wishes.repositories.WantyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ public class PersonService {
     @Autowired
     private WantyRepository wantyRepository;
 
-    public void addPerson(String type, String name, String patronymic, String surname) {
-        Person person = new Person(type, name, surname, patronymic);
+    public void addPerson(String type, String name, String surname) {
+        Person person = new Person(type, name, surname);
         personRepository.save(person);
     }
 
@@ -62,30 +63,36 @@ public class PersonService {
     }
 
     // used in @PostMapping while edited personal info is being saved to the DB
-    public void updatePerson (long id, String name, String patronymic, String surname) {
+    public void updatePerson (long id, String name, String surname) {
         Person person = personRepository.findById(id).orElseThrow();
 
         person.setName(name);
-        person.setPatronymic(patronymic);
         person.setSurname(surname);
 
         personRepository.save(person);
     }
 
+    public void archivePerson (long id) {
+        Person person = personRepository.findById(id).orElseThrow();
+        person.setArchived(true);
+        personRepository.save(person);
+    }
+
+    public void unarchivePerson (long id) {
+        Person person = personRepository.findById(id).orElseThrow();
+        person.setArchived(false);
+        personRepository.save(person);
+    }
+
     public void deletePerson (long id) {
-        if (!wantyRepository.existsBySellerIdOrBuyerIdOrClientId(id, id, id))
-            personRepository.deleteById(id);
-        else {
-            Person person = personRepository.findById(id).orElseThrow();
-            person.setArchived(true);
-            personRepository.save(person);
-        }
+        wantyRepository.deleteAllTheWantiesByPersonId(id);
+        personRepository.deleteById(id);
     }
 
     public String getPersonFullName (long personId) {
         Person person = personRepository.findById(personId).orElseThrow();
 
-        return person.getSurname() + " " + person.getName() + " " + person.getPatronymic();
+        return person.getSurname() + " " + person.getName();
     }
 
     // returns map with all the people

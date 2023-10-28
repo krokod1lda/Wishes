@@ -59,13 +59,13 @@
                             <label for="sellerId" class="form-label">Продавец</label>
                             <select class="form-select" id="sellerId">
                                 <option th:value="${curSeller.get(0).id}"
-                                        th:text="${curSeller.get(0).surname + ' ' + curSeller.get(0).name + ' ' + curSeller.get(0).patronymic}">
+                                        th:text="${curSeller.get(0).surname + ' ' + curSeller.get(0).name}">
                                 </option>
 
                                 <div th:each="el : ${map.get('sellers')}">
                                     <option th:value="${el.id}"
-                                            th:text="${el.archived ? '(Архив) ' + el.surname + ' ' + el.name + ' ' + el.patronymic :
-                                            el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
+                                            th:text="${el.archived ? '(Архив) ' + el.surname :
+                                            el.surname + ' ' + el.name}"></option>
                                 </div>
                             </select>
                         </div>
@@ -76,13 +76,13 @@
                             <label for="buyerId" class="form-label">Байер</label>
                             <select class="form-select" id="buyerId">
                                 <option th:value="${curBuyer.get(0).id}"
-                                        th:text="${curBuyer.get(0).surname + ' ' + curBuyer.get(0).name + ' ' + curBuyer.get(0).patronymic}">
+                                        th:text="${curBuyer.get(0).surname + ' ' + curBuyer.get(0).name}">
                                 </option>
 
                                 <div th:each="el : ${map.get('buyers')}">
                                     <option th:value="${el.id}"
-                                            th:text="${el.archived ? '(Архив) ' + el.surname + ' ' + el.name + ' ' + el.patronymic :
-                                            el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
+                                            th:text="${el.archived ? '(Архив) ' + el.surname + ' ' + el.name :
+                                            el.surname + ' ' + el.name}"></option>
                                 </div>
                             </select>
                         </div>
@@ -93,13 +93,13 @@
                             <label for="clientId" class="form-label">Клиент</label>
                             <select class="form-select" id="clientId">
                                 <option th:value="${curClient.get(0).id}"
-                                        th:text="${curClient.get(0).surname + ' ' + curClient.get(0).name + ' ' + curClient.get(0).patronymic}">
+                                        th:text="${curClient.get(0).surname + ' ' + curClient.get(0).name}">
                                 </option>
 
                                 <div th:each="el : ${map.get('clients')}">
                                     <option th:value="${el.id}"
-                                            th:text="${el.archived ? '(Архив) ' + el.surname + ' ' + el.name + ' ' + el.patronymic :
-                                            el.surname + ' ' + el.name + ' ' + el.patronymic}"></option>
+                                            th:text="${el.archived ? '(Архив) ' + el.surname + ' ' + el.name :
+                                            el.surname + ' ' + el.name}"></option>
                                 </div>
                             </select>
                         </div>
@@ -188,8 +188,8 @@
         formData.append('isPurchased', isPurchased);
         formData.append('description', description.value);
 
-        const fetchURL = "/wanty" + id + "/edit";
-        const replaceURL = "/wanty" + id;
+        const fetchURL = "/wanty/" + id + "/edit";
+        const replaceURL = "/wanty/" + id;
 
         await fetch(fetchURL, {
             method: 'POST',

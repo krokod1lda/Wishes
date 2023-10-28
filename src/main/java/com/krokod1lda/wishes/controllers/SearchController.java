@@ -8,6 +8,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+enum SearchAttributes {
+    TITLE("title"),
+    MAP("map"),
+    RESULTS("results");
+
+    private final String value;
+
+    SearchAttributes(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+}
+
 @Controller
 public class SearchController {
     @Autowired
@@ -17,11 +33,11 @@ public class SearchController {
 
     @GetMapping("/searchByQuery")
     public String searchByQuery(@RequestParam("query") String query, Model model) {
-        model.addAttribute("title", "Поиск");
+        model.addAttribute(SearchAttributes.TITLE.getValue(), "Поиск");
 
         if(!query.isEmpty()) {
-            model.addAttribute("map", personService.getAllThePeople());
-            model.addAttribute("results", wantyService.getWanty(query));
+            model.addAttribute(SearchAttributes.MAP.getValue(), personService.getAllThePeople());
+            model.addAttribute(SearchAttributes.RESULTS.getValue(), wantyService.getWanty(query));
             model.addAttribute("query", query);
 
             return "search";
@@ -36,24 +52,24 @@ public class SearchController {
                           @RequestParam("clientId") long clientId,
                           Model model) {
 
-        model.addAttribute("title", "Поиск");
+        model.addAttribute(SearchAttributes.TITLE.getValue(), "Поиск");
 
-        model.addAttribute("map", personService.getAllThePeople());
+        model.addAttribute(SearchAttributes.MAP.getValue(), personService.getAllThePeople());
 
         if(buyerId != 0) {
-            model.addAttribute("results", wantyService.getWishesByBuyer(buyerId));
+            model.addAttribute(SearchAttributes.RESULTS.getValue(), wantyService.getWishesByBuyer(buyerId));
             model.addAttribute("personId", buyerId);
 
             return "search";
         }
         else if(sellerId != 0) {
-            model.addAttribute("results", wantyService.getWishesBySeller(sellerId));
+            model.addAttribute(SearchAttributes.RESULTS.getValue(), wantyService.getWishesBySeller(sellerId));
             model.addAttribute("personId", sellerId);
 
             return "search";
         }
         else if(clientId != 0) {
-            model.addAttribute("results", wantyService.getWishesByClient(clientId));
+            model.addAttribute(SearchAttributes.RESULTS.getValue(), wantyService.getWishesByClient(clientId));
             model.addAttribute("personId", clientId);
 
             return "search";

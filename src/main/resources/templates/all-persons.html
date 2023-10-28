@@ -30,7 +30,6 @@
             <tr>
                 <th scope="col">Фамилия</th>
                 <th scope="col">Имя</th>
-                <th scope="col">Отчество</th>
             </tr>
             </thead>
 
@@ -41,10 +40,9 @@
                 <tbody>
 
                 <div th:each="el2 : ${el.getValue()}">
-                    <tr th:personHref="'/person' + ${el2.id}" style="cursor: pointer" th:value="${el2.archived ? 'arc' : ''}">
+                    <tr th:personHref="${el2.id}" style="cursor: pointer" th:value="${el2.archived ? 'arc' : ''}">
                         <td th:text="${el2.surname}"/>
                         <td th:text="${el2.name}"/>
-                        <td th:text="${el2.patronymic}"/>
                     </tr>
                 </div>
 
@@ -90,10 +88,30 @@
 <script>
     const tableRows = document.querySelectorAll('tr[personHref]');
 
+    let url;
+
     tableRows.forEach(row => {
         row.addEventListener('click', () => {
-            const url = row.getAttribute('personHref');
-            window.location.href = url;
+            if (row.getAttribute('value')) {
+                url = '/archived/' + row.getAttribute('personHref'); // НЕ РЕАЛИЗОВАНО
+            }
+            else {
+                url = '/person/' + row.getAttribute('personHref');
+            }
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200)
+                    var response = xhr.responseText;
+            };
+
+            xhr.send();
+
+            window.location.replace(url);
         });
     });
 </script>
