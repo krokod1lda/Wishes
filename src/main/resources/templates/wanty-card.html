@@ -37,7 +37,7 @@
 
                     <div class="col-sm-6">
                         <h5>Дата</h5>
-                        <p th:text="${el.date}">
+                        <p th:text="${#dates.format(el.date, 'dd.MM.yyyy')}">
                     </div>
 
                     <div class="col-sm-6">

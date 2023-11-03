@@ -93,7 +93,7 @@
     tableRows.forEach(row => {
         row.addEventListener('click', () => {
             if (row.getAttribute('value')) {
-                url = '/archived/' + row.getAttribute('personHref'); // НЕ РЕАЛИЗОВАНО
+                url = '/archived/' + row.getAttribute('personHref');
             }
             else {
                 url = '/person/' + row.getAttribute('personHref');

@@ -16,7 +16,25 @@
 
 <div class="container mt-3">
     <h3>Статистика</h3>
+
     <hr class="my-4">
+
+    <div class="row g-6">
+        <div class="col-sm-2">
+            <label for="date1Id" class="form-label">Дата начала</label>
+            <input type="date" class="form-control" id="date1Id">
+        </div>
+
+        <div class="col-sm-2">
+            <label for="date2Id" class="form-label">Дата окончания</label>
+            <input type="date" class="form-control" id="date2Id">
+        </div>
+
+        <div class="col align-self-end">
+            <button class="btn btn-light forSearchButton" type="submit" onclick="openStatistics();">Найти</button>
+        </div>
+    </div>
+
 
     <div class="table-responsive small mt-3">
         <table class="table table-hover table-sm forTables">
@@ -29,38 +47,34 @@
             </thead>
 
             <tbody>
-            <tr>
-                <td>нейм</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
 
-            <tr>
-                <td>нейм 2</td>
-                <td>1</td>
-                <td>1</td>
-            </tr>
+            <div th:each="el : ${wantiesSeller.keySet()}">
+                <tr>
+                    <td th:text="${el}"/>
+                    <td th:text="${wantiesSeller.get(el).getTotally()}"/>
+                    <td th:text="${wantiesSeller.get(el).getPurchased()}"/>
+                </tr>
+            </div>
+
             </tbody>
 
             <thead>
             <tr class="forTrTables">
                 <th scope="col">Клиент</th>
                 <th scope="col">Купил</th>
-                <th scope="col">Не купил</th>
+                <th scope="col">Не купили</th>
             </tr>
 
             <tbody>
-            <tr>
-                <td>имя</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
 
-            <tr>
-                <td>имя 2</td>
-                <td>1</td>
-                <td>1</td>
-            </tr>
+            <div th:each="el : ${wantiesClient.keySet()}">
+                <tr>
+                    <td th:text="${el}"/>
+                    <td th:text="${wantiesClient.get(el).getTotally()}"/>
+                    <td th:text="${wantiesClient.get(el).getPurchased()}"/>
+                </tr>
+            </div>
+
             </tbody>
             </thead>
         </table>
@@ -78,6 +92,27 @@
 
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
+    }
+
+    function openStatistics() {
+        const date1 = document.getElementById("date1Id").value;
+        const date2 = document.getElementById("date2Id").value
+
+        const url = "/statistics?date1=" + date1 + "&date2=" + date2;
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200)
+                var response = xhr.responseText;
+        };
+
+        //xhr.send();
+
+        window.location.replace(url);
     }
 </script>
 

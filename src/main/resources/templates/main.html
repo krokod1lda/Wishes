@@ -63,7 +63,7 @@
         <div th:wishHref="'wanty/' + ${el.id}" class="col-md-12 mb-2" style="cursor: pointer">
             <div class="row g-0 border rounded overflow-hidden shadow-sm">
                 <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary-emphasis" th:text="${el.date}"></strong>
+                    <strong th:wishDate class="d-inline-block mb-2 text-primary-emphasis" th:text="${#dates.format(el.date, 'dd.MM.yyyy')}"></strong>
                     <h3 class="mb-2" th:text="${el.wantyName}"></h3>
                     <p class="card-text mb-auto" th:text="${el.description}"></p>
                     <strong class="d-inline-block mb-2 text-primary-emphasis" th:text="${el.isPurchased ? 'Купили' : 'Не купили'}"></strong>
@@ -142,10 +142,6 @@
             enable(input, clientSelect, buyerSelect, sellerSelect);
     }
 
-    function disableEmpties() {
-
-    }
-
     function disable(el1, el2, el3) {
         el1.disabled = true;
         el2.disabled = true;
@@ -157,6 +153,33 @@
         el2.disabled = false;
         el3.disabled = false;
         el4.disabled = false;
+    }
+    function openStatistics() {
+        const date1 = "2000-01-01";
+
+        const date = new Date();
+
+        let currentDay= String(date.getDate()).padStart(2, "0");
+        let currentMonth = String(date.getMonth()+1).padStart(2,"0");
+        let currentYear = date.getFullYear();
+
+        const date2 = `${currentYear}-${currentMonth}-${currentDay}`;
+
+        const url = "/statistics?date1=" + date1 + "&date2=" + date2;
+
+        // const url = "/all-statistics";
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200)
+            var response = xhr.responseText;
+        };
+
+        window.location.replace(url);
     }
 </script>
 

@@ -1,8 +1,8 @@
 package com.krokod1lda.wishes.controllers;
 
+import com.krokod1lda.wishes.SoldInfo;
 import com.krokod1lda.wishes.models.Person;
 import com.krokod1lda.wishes.models.Wanty;
-import com.krokod1lda.wishes.repositories.PersonRepository;
 import com.krokod1lda.wishes.services.PersonService;
 import com.krokod1lda.wishes.services.WantyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
+import java.sql.Date;
 
 enum WantyAttributes {
     TITLE("title"),
     MAP("map"),
-    WANTY("wanty");
+    WANTY("wanty"),
+    STATISTICS("Статистика"),
+    WANTIES("wanties");
 
     private final String value;
 
@@ -33,8 +36,6 @@ enum WantyAttributes {
 
 @Controller
 public class WantyController {
-    @Autowired
-    PersonRepository personRepository;
     @Autowired
     PersonService personService;
     @Autowired
@@ -59,12 +60,13 @@ public class WantyController {
     }
 
     @PostMapping("/add-wanty")
-    public String addWanty(@RequestParam("name") String name, @RequestParam("date") String date,
+    public String addWanty(@RequestParam("name") String name, @RequestParam("date") Date date,
                            @RequestParam("size") String size, @RequestParam("seller") long sellerId,
                            @RequestParam("buyer") long buyerId, @RequestParam("client") long clientId,
                            @RequestParam("isPurchased") boolean isPurchased, @RequestParam("description") String description) {
 
         wantyService.addWanty(name, date, size, sellerId, buyerId, clientId, isPurchased, description);
+//        personService.updatePurchasedInfo(sellerId, clientId, isPurchased);
 
         return "redirect:/";
     }
@@ -112,7 +114,7 @@ public class WantyController {
 
     @PostMapping("/wanty/{wantyId}/edit")
     public String editWanty(@PathVariable("wantyId") long wantyId, @RequestParam("name") String name,
-                            @RequestParam("date") String date, @RequestParam("size") String size,
+                            @RequestParam("date") Date date, @RequestParam("size") String size,
                             @RequestParam("seller") long sellerId, @RequestParam("buyer") long buyerId,
                             @RequestParam("client") long clientId, @RequestParam("isPurchased") boolean isPurchased,
                             @RequestParam("description") String description) {
@@ -128,5 +130,32 @@ public class WantyController {
         wantyService.deleteWanty(wantyId);
 
         return "redirect:/";
+    }
+
+//    @GetMapping("/all-statistics")
+//    public String allStatistics(Model model) {
+//        model.addAttribute(PersonAttributes.TITLE.getValue(), WantyAttributes.STATISTICS.getValue());
+//
+//
+//    }
+
+    @GetMapping("/statistics")
+    public String statistics(@RequestParam("date1") Date date1, @RequestParam("date2") Date date2, Model model) {
+        model.addAttribute(PersonAttributes.TITLE.getValue(), WantyAttributes.STATISTICS.getValue());
+
+        ArrayList<HashMap<String, SoldInfo>> wanties = wantyService.getStatistics(date1, date2);
+
+        for (String name : wanties.get(0).keySet()) {
+            System.out.println(name + ": " + wanties.get(0).get(name).getTotally() + wanties.get(0).get(name).getPurchased());
+        }
+
+        for (String name : wanties.get(1).keySet()) {
+            System.out.println(name + ": " + wanties.get(1).get(name).getTotally() + ", " + wanties.get(1).get(name).getPurchased());
+        }
+
+        model.addAttribute("wantiesSeller", wanties.get(0));
+        model.addAttribute("wantiesClient", wanties.get(1));
+
+        return "statistics";
     }
 }

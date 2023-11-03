@@ -66,7 +66,7 @@
         <div th:wishHref="'wanty' + ${el.id}" class="col-md-12 mb-2" style="cursor: pointer">
             <div class="row g-0 border rounded overflow-hidden shadow-sm">
                 <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary-emphasis" th:text="${el.date}"></strong>
+                    <strong class="d-inline-block mb-2 text-primary-emphasis" th:text="${#dates.format(el.date, 'dd.MM.yyyy')}"></strong>
                     <h3 class="mb-2" th:text="${el.wantyName}"></h3>
                     <p class="card-text mb-auto" th:text="${el.description}"></p>
                     <strong class="d-inline-block mb-2 text-primary-emphasis" th:text="${el.isPurchased ? 'Купили' : 'Не купили'}"></strong>
@@ -105,7 +105,7 @@
 
         let url;
 
-        if(query || buyerId != '0' || sellerId != '0' || clientId != '0') {
+        if(query || buyerId !== '0' || sellerId !== '0' || clientId !== '0') {
             url = query ? '/searchByQuery?query=' + query :
                 '/searchByPerson?buyerId=' + buyerId + '&sellerId=' + sellerId + '&clientId=' + clientId;
 
@@ -115,7 +115,7 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
 
             xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200)
+                if (xhr.readyState === 4 && xhr.status === 200)
                     var response = xhr.responseText;
             };
 
@@ -166,8 +166,7 @@
 
     wishPlates.forEach(plate => {
         plate.addEventListener('click', () => {
-            const url = plate.getAttribute('wishHref');
-            window.location.href = url;
+            window.location.href = plate.getAttribute('wishHref');
         });
     });
 </script>

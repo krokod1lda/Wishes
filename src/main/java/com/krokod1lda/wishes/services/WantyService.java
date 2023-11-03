@@ -1,11 +1,15 @@
 package com.krokod1lda.wishes.services;
 
+import com.krokod1lda.wishes.SoldInfo;
 import com.krokod1lda.wishes.models.Wanty;
+import com.krokod1lda.wishes.repositories.PersonRepository;
 import com.krokod1lda.wishes.repositories.WantyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,13 +17,15 @@ import java.util.Optional;
 public class WantyService {
     @Autowired
     private WantyRepository wantyRepository;
+    @Autowired
+    private PersonRepository personRepository;
 
     public Iterable<Wanty> getAllTheWanties () {
 
         return wantyRepository.findAll();
     }
 
-    public void addWanty (String name, String date, String size, long sellerId,
+    public void addWanty (String name, Date date, String size, long sellerId,
                           long buyerId, long clientId, boolean isPurchased, String description) {
 
         Wanty wanty = new Wanty(name, date, size, sellerId, buyerId, clientId,
@@ -56,7 +62,7 @@ public class WantyService {
         return wantyRepository.findByClientId(personId);
     }
 
-    public void updateWanty (long wantyId, String name, String date, String size, long sellerId,
+    public void updateWanty (long wantyId, String name, Date date, String size, long sellerId,
                               long buyerId, long clientId, boolean isPurchased, String description) {
 
         Wanty wanty = wantyRepository.findById(wantyId).orElseThrow();
@@ -71,5 +77,53 @@ public class WantyService {
         Wanty wanty = wantyRepository.findById(wantyId).orElseThrow();
 
         wantyRepository.delete(wanty);
+    }
+
+    public ArrayList<HashMap<String, SoldInfo>> getStatistics(Date date1, Date date2) {
+        ArrayList<Wanty> wanties = wantyRepository.getEntriesByDates(date1, date2);
+
+        HashMap<Long, SoldInfo> sellerSoldInfoHashMap = new HashMap<>();
+        HashMap<Long, SoldInfo> clientSoldInfoHashMap = new HashMap<>();
+        SoldInfo soldInfo;
+
+        for (Wanty wanty : wanties) {
+            // for sellers
+            soldInfo = sellerSoldInfoHashMap.get(wanty.getSellerId());
+
+            if (soldInfo != null)
+                soldInfo.update(1, wanty.isPurchased() ? 1 : 0);
+            else
+                soldInfo = new SoldInfo(1, wanty.isPurchased() ? 1 : 0);
+
+            sellerSoldInfoHashMap.put(wanty.getSellerId(), soldInfo);
+
+            // for clients
+            soldInfo = clientSoldInfoHashMap.get(wanty.getClientId());
+
+            if (soldInfo != null)
+                soldInfo.update(1, wanty.isPurchased() ? 1 : 0);
+            else
+                soldInfo = new SoldInfo(1, wanty.isPurchased() ? 1 : 0);
+
+            clientSoldInfoHashMap.put(wanty.getClientId(), soldInfo);
+        }
+
+        ArrayList<HashMap<String, SoldInfo>> result = new ArrayList<>();
+
+        result.add(getResult(sellerSoldInfoHashMap));
+        result.add(getResult(clientSoldInfoHashMap));
+
+        return result;
+    }
+
+    HashMap<String, SoldInfo> getResult(HashMap<Long, SoldInfo> soldInfoHashMap) {
+        HashMap<String, SoldInfo> result = new HashMap<>();
+
+        for (Long id : soldInfoHashMap.keySet())
+            result.put(personRepository.findById(id).orElseThrow().getName() +
+                    " " + personRepository.findById(id).orElseThrow().getSurname(),
+                    soldInfoHashMap.get(id));
+
+        return result;
     }
 }

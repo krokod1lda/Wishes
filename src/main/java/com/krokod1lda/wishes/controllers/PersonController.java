@@ -21,8 +21,7 @@ enum PersonAttributes {
     PERSON("person"),
     ID("id"),
     EDITING_PARTICIPANT("Редактирование участника"),
-    EDITING_ARCHIVED_PARTICIPANT("Редактирование архивированного участника"),
-    STATISTICS("Статистика");
+    EDITING_ARCHIVED_PARTICIPANT("Редактирование архивированного участника");
 
     private final String value;
 
@@ -131,12 +130,5 @@ public class PersonController {
         personService.deletePerson(id);
 
         return "redirect:/all-persons";
-    }
-
-    @GetMapping("/statistics")
-    public String statistics(Model model) {
-        model.addAttribute(PersonAttributes.TITLE.getValue(), PersonAttributes.STATISTICS.getValue());
-
-        return "statistics";
     }
 }

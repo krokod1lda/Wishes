@@ -2,6 +2,8 @@ package com.krokod1lda.wishes.models;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
+
 @Entity
 public class Wanty {
 
@@ -9,7 +11,8 @@ public class Wanty {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String wantyName;
-    private String date;
+    @Column(columnDefinition = "DATE")
+    private Date date;
     private String size;
     private long sellerId;
     private long buyerId;
@@ -22,7 +25,7 @@ public class Wanty {
     @Column(columnDefinition = "MEDIUMBLOB")
     private byte[] wantyPhoto;
 
-    public Wanty(String wantyName, String date, String size, long sellerId, long buyerId,
+    public Wanty(String wantyName, Date date, String size, long sellerId, long buyerId,
                  long clientId, boolean isPurchased, String description, byte[] wantyPhoto) {
 
         this.wantyName = wantyName;
@@ -54,11 +57,11 @@ public class Wanty {
         this.wantyName = wantyName;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -118,7 +121,7 @@ public class Wanty {
         this.wantyPhoto = wantyPhoto;
     }
 
-    public void update (String wantyName, String date, String size, long sellerId, long buyerId,
+    public void update(String wantyName, Date date, String size, long sellerId, long buyerId,
                         long clientId, boolean isPurchased, String description, byte[] wantyPhoto) {
 
         this.wantyName = wantyName;
