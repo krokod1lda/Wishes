@@ -155,19 +155,19 @@
         el4.disabled = false;
     }
     function openStatistics() {
-        const date1 = "2000-01-01";
+        // const date1 = "2000-01-01";
+        //
+        // const date = new Date();
+        //
+        // let currentDay= String(date.getDate()).padStart(2, "0");
+        // let currentMonth = String(date.getMonth()+1).padStart(2,"0");
+        // let currentYear = date.getFullYear();
+        //
+        // const date2 = `${currentYear}-${currentMonth}-${currentDay}`;
+        //
+        // const url = "/statistics?date1=" + date1 + "&date2=" + date2;
 
-        const date = new Date();
-
-        let currentDay= String(date.getDate()).padStart(2, "0");
-        let currentMonth = String(date.getMonth()+1).padStart(2,"0");
-        let currentYear = date.getFullYear();
-
-        const date2 = `${currentYear}-${currentMonth}-${currentDay}`;
-
-        const url = "/statistics?date1=" + date1 + "&date2=" + date2;
-
-        // const url = "/all-statistics";
+        const url = "/start-statistics";
 
         var xhr = new XMLHttpRequest();
 

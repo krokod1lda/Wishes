@@ -41,8 +41,8 @@
             <thead>
             <tr class="forTrTables">
                 <th scope="col">Продавец</th>
+                <th scope="col">Всего</th>
                 <th scope="col">Купили</th>
-                <th scope="col">Не купили</th>
             </tr>
             </thead>
 
@@ -60,10 +60,31 @@
 
             <thead>
             <tr class="forTrTables">
-                <th scope="col">Клиент</th>
-                <th scope="col">Купил</th>
-                <th scope="col">Не купили</th>
+                <th scope="col">Байер</th>
+                <th scope="col">Всего</th>
+                <th scope="col">Купили</th>
             </tr>
+            </thead>
+
+            <tbody>
+
+            <div th:each="el : ${wantiesBuyer.keySet()}">
+                <tr>
+                    <td th:text="${el}"/>
+                    <td th:text="${wantiesBuyer.get(el).getTotally()}"/>
+                    <td th:text="${wantiesBuyer.get(el).getPurchased()}"/>
+                </tr>
+            </div>
+
+            </tbody>
+
+            <thead>
+            <tr class="forTrTables">
+                <th scope="col">Клиент</th>
+                <th scope="col">Всего</th>
+                <th scope="col">Купили</th>
+            </tr>
+            </thead>
 
             <tbody>
 
@@ -76,7 +97,6 @@
             </div>
 
             </tbody>
-            </thead>
         </table>
     </div>
 </div>

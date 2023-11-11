@@ -71,7 +71,6 @@ public class WantyController {
         return "redirect:/";
     }
 
-    // NEED TO REFACTOR THIS METHOD
     @GetMapping("/wanty/{wantyId}")
     public String wantyCard(@PathVariable(value = "wantyId") long wantyId, Model model) {
         model.addAttribute(WantyAttributes.TITLE.getValue(), "Карточка запроса");
@@ -90,7 +89,6 @@ public class WantyController {
         return "wanty-card";
     }
 
-    // NEED TO REFACTOR THIS METHOD TOO
     @GetMapping("/wanty/{wantyId}/edit")
     public String editWanty(@PathVariable("wantyId") long wantyId, Model model) {
         model.addAttribute(WantyAttributes.TITLE.getValue(), "Редактирование запроса");
@@ -132,12 +130,18 @@ public class WantyController {
         return "redirect:/";
     }
 
-//    @GetMapping("/all-statistics")
-//    public String allStatistics(Model model) {
-//        model.addAttribute(PersonAttributes.TITLE.getValue(), WantyAttributes.STATISTICS.getValue());
-//
-//
-//    }
+    @GetMapping("/start-statistics")
+    public String startStatistics(Model model) {
+        model.addAttribute(PersonAttributes.TITLE.getValue(), WantyAttributes.STATISTICS.getValue());
+
+        ArrayList<HashMap<String, SoldInfo>> wanties = wantyService.getStartStatistics();
+
+        model.addAttribute("wantiesSeller", wanties.get(0));
+        model.addAttribute("wantiesBuyer", wanties.get(1));
+        model.addAttribute("wantiesClient", wanties.get(2));
+
+        return "statistics";
+    }
 
     @GetMapping("/statistics")
     public String statistics(@RequestParam("date1") Date date1, @RequestParam("date2") Date date2, Model model) {
@@ -145,16 +149,9 @@ public class WantyController {
 
         ArrayList<HashMap<String, SoldInfo>> wanties = wantyService.getStatistics(date1, date2);
 
-        for (String name : wanties.get(0).keySet()) {
-            System.out.println(name + ": " + wanties.get(0).get(name).getTotally() + wanties.get(0).get(name).getPurchased());
-        }
-
-        for (String name : wanties.get(1).keySet()) {
-            System.out.println(name + ": " + wanties.get(1).get(name).getTotally() + ", " + wanties.get(1).get(name).getPurchased());
-        }
-
         model.addAttribute("wantiesSeller", wanties.get(0));
-        model.addAttribute("wantiesClient", wanties.get(1));
+        model.addAttribute("wantiesBuyer", wanties.get(1));
+        model.addAttribute("wantiesClient", wanties.get(2));
 
         return "statistics";
     }
