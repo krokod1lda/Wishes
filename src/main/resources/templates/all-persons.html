@@ -28,8 +28,8 @@
         <table class="table table-hover table-sm forTables">
             <thead>
             <tr>
-                <th scope="col">Фамилия</th>
                 <th scope="col">Имя</th>
+                <th scope="col">Фамилия</th>
             </tr>
             </thead>
 
@@ -41,8 +41,8 @@
 
                 <div th:each="el2 : ${el.getValue()}">
                     <tr th:personHref="${el2.id}" style="cursor: pointer" th:value="${el2.archived ? 'arc' : ''}">
-                        <td th:text="${el2.surname}"/>
                         <td th:text="${el2.name}"/>
+                        <td th:text="${el2.surname}"/>
                     </tr>
                 </div>
 
@@ -82,6 +82,22 @@
                     row.style.display = 'none';
             }
         });
+    }
+
+    function openStartStatistics() {
+        const url = "/start-statistics";
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200)
+                var response = xhr.responseText;
+        };
+
+        window.location.replace(url);
     }
 </script>
 

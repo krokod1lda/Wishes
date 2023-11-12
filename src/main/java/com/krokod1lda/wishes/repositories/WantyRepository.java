@@ -9,16 +9,21 @@ import org.springframework.data.repository.query.Param;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
 
 public interface WantyRepository extends CrudRepository<Wanty, Long> {
-    @Query(value = "select * from wanty where wanty_name like %:wantyName%",
+    @Query(value = "select * from wanty where wanty_name like %:wantyName% order by date desc",
             nativeQuery = true)
     ArrayList<Wanty> findByWantyName(@Param("wantyName")String wantyName);
-    ArrayList<Wanty> findByBuyerId(long buyerId);
-    ArrayList<Wanty> findBySellerId(long sellerId);
-    ArrayList<Wanty> findByClientId(long clientId);
-    boolean existsBySellerIdOrBuyerIdOrClientId(long sellerId, long buyerId, long clientId);
+
+    @Query(value = "select * from wanty where buyer_id = :buyerId order by date desc",
+            nativeQuery = true)
+    ArrayList<Wanty> findByBuyerId(@Param("buyerId") long buyerId);
+    @Query(value = "select * from wanty where seller_id = :sellerId order by date desc",
+            nativeQuery = true)
+    ArrayList<Wanty> findBySellerId(@Param("sellerId") long sellerId);
+    @Query(value = "select * from wanty where client_id = :clientId order by date desc",
+            nativeQuery = true)
+    ArrayList<Wanty> findByClientId(@Param("clientId") long clientId);
 
     @Transactional
     @Modifying
@@ -27,19 +32,10 @@ public interface WantyRepository extends CrudRepository<Wanty, Long> {
     void deleteAllTheWantiesByPersonId(@Param("id") long id);
 
     @Query(value = "select * from wanty where date > :date1 and date < :date2 order by date asc",
-    nativeQuery = true)
+            nativeQuery = true)
     ArrayList<Wanty> getEntriesByDates(@Param("date1") Date date1, @Param("date2") Date date2);
 
-    /*
-    Для подсчета количества записей для каждого значения id_seller,
-    где поле date больше значения date1 и меньше значения date2,
-    можно использовать следующий SQL-запрос:
-
-    SELECT id_seller, COUNT(*) as count_records
-    FROM wanty
-    WHERE date > date1 AND date < date2
-    GROUP BY id_seller;
-    */
-
-
+    @Query(value = "select * from wanty order by date desc",
+            nativeQuery = true)
+    ArrayList<Wanty> findAllDesc();
 }

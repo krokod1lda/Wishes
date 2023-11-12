@@ -21,9 +21,9 @@ public class WantyService {
     @Autowired
     private PersonRepository personRepository;
 
-    public Iterable<Wanty> getAllTheWanties() {
+    public ArrayList<Wanty> getAllTheWanties() {
 
-        return wantyRepository.findAll();
+        return wantyRepository.findAllDesc();
     }
 
     public void addWanty(String name, Date date, String size, long sellerId,

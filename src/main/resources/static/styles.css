@@ -9,7 +9,7 @@
 
 .forSearchButton {
     border-color: #ced4da;
-    color: #818181;
+    color: #3f3f3f;
 }
 
 .forDropdowns {
@@ -82,7 +82,7 @@
     left: 0;
     background-color: white;
     overflow-x: hidden;
-    transition: 1.0s;
+    transition: 0.4s;
     padding-top: 60px;
 }
 

@@ -66,7 +66,6 @@ public class WantyController {
                            @RequestParam("isPurchased") boolean isPurchased, @RequestParam("description") String description) {
 
         wantyService.addWanty(name, date, size, sellerId, buyerId, clientId, isPurchased, description);
-//        personService.updatePurchasedInfo(sellerId, clientId, isPurchased);
 
         return "redirect:/";
     }
@@ -140,6 +139,9 @@ public class WantyController {
         model.addAttribute("wantiesBuyer", wanties.get(1));
         model.addAttribute("wantiesClient", wanties.get(2));
 
+        model.addAttribute("date1", null);
+        model.addAttribute("date2", null);
+
         return "statistics";
     }
 
@@ -152,6 +154,9 @@ public class WantyController {
         model.addAttribute("wantiesSeller", wanties.get(0));
         model.addAttribute("wantiesBuyer", wanties.get(1));
         model.addAttribute("wantiesClient", wanties.get(2));
+
+        model.addAttribute("date1", date1);
+        model.addAttribute("date2", date2);
 
         return "statistics";
     }

@@ -3,10 +3,12 @@ package com.krokod1lda.wishes;
 public class SoldInfo {
     private int totally;
     private int purchased;
+    private int notPurchased;
 
     public SoldInfo(int totally, int purchased) {
         this.totally = totally;
         this.purchased = purchased;
+        this.notPurchased = totally - purchased;
     }
 
     public int getTotally() {
@@ -25,8 +27,17 @@ public class SoldInfo {
         this.purchased = purchased;
     }
 
+    public int getNotPurchased() {
+        return notPurchased;
+    }
+
+    public void setNotPurchased(int notPurchased) {
+        this.notPurchased = notPurchased;
+    }
+
     public void update(int totally, int purchased) {
         this.totally += totally;
         this.purchased += purchased;
+        this.notPurchased += totally - purchased;
     }
 }
