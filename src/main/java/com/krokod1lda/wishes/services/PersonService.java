@@ -1,5 +1,6 @@
 package com.krokod1lda.wishes.services;
 
+import com.krokod1lda.wishes.EntityAttributes.PersonAttributes;
 import com.krokod1lda.wishes.models.Person;
 import com.krokod1lda.wishes.models.Wanty;
 import com.krokod1lda.wishes.repositories.PersonRepository;
@@ -30,25 +31,24 @@ public class PersonService {
     }
 
     public Map<String, List<Person>> getPeopleMapForAllPersonsPage() {
-        List<Person> sellers = personRepository.findByType("seller");
-        List<Person> buyers = personRepository.findByType("buyer");
-        List<Person> clients = personRepository.findByType("client");
+        List<Person> sellers = personRepository.findByType(PersonAttributes.TYPE_SELLER.getValue());
+        List<Person> buyers = personRepository.findByType(PersonAttributes.TYPE_BUYER.getValue());
+        List<Person> clients = personRepository.findByType(PersonAttributes.TYPE_CLIENT.getValue());
 
         Map<String, List<Person>> map = new LinkedHashMap<>();
 
-        map.put("Продавцы", sellers);
-        map.put("Байеры", buyers);
-        map.put("Клиенты", clients);
+        map.put(PersonAttributes.KEY_SELLERS_RU.getValue(), sellers);
+        map.put(PersonAttributes.KEY_BUYERS_RU.getValue(), buyers);
+        map.put(PersonAttributes.KEY_CLIENTS_RU.getValue(), clients);
 
-        if (sellers.isEmpty()) {
-            map.remove("Продавцы");
-        }
-        if (buyers.isEmpty()) {
-            map.remove("Байеры");
-        }
-        if (clients.isEmpty()) {
-            map.remove("Клиенты");
-        }
+        if (sellers.isEmpty())
+            map.remove(PersonAttributes.KEY_SELLERS_RU.getValue());
+
+        if (buyers.isEmpty())
+            map.remove(PersonAttributes.KEY_BUYERS_RU.getValue());
+
+        if (clients.isEmpty())
+            map.remove(PersonAttributes.KEY_CLIENTS_RU.getValue());
 
         return map;
     }
@@ -97,39 +97,24 @@ public class PersonService {
 
     // returns map with all the people
     public Map<String, List<Person>> getAllThePeople() {
-        List<Person> sellers = personRepository.findByType("seller");
-        List<Person> buyers = personRepository.findByType("buyer");
-        List<Person> clients = personRepository.findByType("client");
+        List<Person> sellers = personRepository.findByType(PersonAttributes.TYPE_SELLER.getValue());
+        List<Person> buyers = personRepository.findByType(PersonAttributes.TYPE_BUYER.getValue());
+        List<Person> clients = personRepository.findByType(PersonAttributes.TYPE_CLIENT.getValue());
 
         Map<String, List<Person>> people = new HashMap<>();
 
-        people.put("sellers", sellers);
-        people.put("buyers", buyers);
-        people.put("clients", clients);
-
-        return people;
-    }
-
-    // returns map with people who have certain state of isArchived variable
-    public static Map<String, List<Person>> getAllThePeopleWithArchived(PersonRepository personRepository, boolean archived) {
-        List<Person> sellers = personRepository.findByTypeAndArchived("seller", archived);
-        List<Person> buyers = personRepository.findByTypeAndArchived("buyer", archived);
-        List<Person> clients = personRepository.findByTypeAndArchived("client", archived);
-
-        Map<String, List<Person>> people = new HashMap<>();
-
-        people.put("sellers", sellers);
-        people.put("buyers", buyers);
-        people.put("clients", clients);
+        people.put(PersonAttributes.KEY_SELLERS_EN.getValue(), sellers);
+        people.put(PersonAttributes.KEY_BUYERS_EN.getValue(), buyers);
+        people.put(PersonAttributes.KEY_CLIENTS_EN.getValue(), clients);
 
         return people;
     }
 
     public Map<String, List<Person>> removeCurrents (Person curSeller, Person curBuyer, Person curClient) {
         Map<String, List<Person>> people = getAllThePeople();
-        people.get("sellers").remove(curSeller);
-        people.get("buyers").remove(curBuyer);
-        people.get("clients").remove(curClient);
+        people.get(PersonAttributes.KEY_SELLERS_EN.getValue()).remove(curSeller);
+        people.get(PersonAttributes.KEY_BUYERS_EN.getValue()).remove(curBuyer);
+        people.get(PersonAttributes.KEY_CLIENTS_EN.getValue()).remove(curClient);
 
         return people;
     }

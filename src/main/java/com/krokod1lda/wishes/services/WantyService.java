@@ -1,6 +1,7 @@
 package com.krokod1lda.wishes.services;
 
-import com.krokod1lda.wishes.SoldInfo;
+import com.krokod1lda.wishes.EntityAttributes.PersonAttributes;
+import com.krokod1lda.wishes.Structures.SoldInfo;
 import com.krokod1lda.wishes.models.Person;
 import com.krokod1lda.wishes.models.Wanty;
 import com.krokod1lda.wishes.repositories.PersonRepository;
@@ -192,9 +193,9 @@ public class WantyService {
         for (Person person : people) {
             soldInfo = new SoldInfo(person.getTotally(), person.getPurchased());
 
-            if(person.getType().equals("seller"))
+            if(person.getType().equals(PersonAttributes.TYPE_SELLER.getValue()))
                 sellerSoldInfoHashMap.put(person.getName() + " " + person.getSurname(), soldInfo);
-            else if(person.getType().equals("buyer"))
+            else if(person.getType().equals(PersonAttributes.TYPE_BUYER.getValue()))
                 buyerSoldInfoHashMap.put(person.getName() + " " + person.getSurname(), soldInfo);
             else
                 clientSoldInfoHashMap.put(person.getName() + " " + person.getSurname(), soldInfo);

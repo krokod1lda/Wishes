@@ -1,5 +1,6 @@
 package com.krokod1lda.wishes.controllers;
 
+import com.krokod1lda.wishes.EntityAttributes.PersonAttributes;
 import com.krokod1lda.wishes.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,31 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-enum PersonAttributes {
-    ROLE("role"),
-    TITLE("title"),
-    TYPE("type"),
-    TITLE_ADDING_SELLER("Добавление продавца"), ROLE_SELLER("продавца"), TYPE_SELLER("seller"),
-    TITLE_ADDING_BUYER("Добавление байера"), ROLE_BUYER("байера"), TYPE_BUYER("buyer"),
-    TITLE_ADDING_CLIENT("Добавление клиента"),  ROLE_CLIENT("клиента"), TYPE_CLIENT("client"),
-    MAP("map"),
-    TITLE_ALL_PARTICIPANTS("Все участники"),
-    PERSON("person"),
-    ID("id"),
-    EDITING_PARTICIPANT("Редактирование участника"),
-    EDITING_ARCHIVED_PARTICIPANT("Редактирование архивированного участника");
-
-    private final String value;
-
-    PersonAttributes(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-}
 
 @Controller
 public class PersonController {

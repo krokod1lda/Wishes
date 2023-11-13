@@ -1,6 +1,8 @@
 package com.krokod1lda.wishes.controllers;
 
-import com.krokod1lda.wishes.SoldInfo;
+import com.krokod1lda.wishes.EntityAttributes.PersonAttributes;
+import com.krokod1lda.wishes.EntityAttributes.WantyAttributes;
+import com.krokod1lda.wishes.Structures.SoldInfo;
 import com.krokod1lda.wishes.models.Person;
 import com.krokod1lda.wishes.models.Wanty;
 import com.krokod1lda.wishes.services.PersonService;
@@ -16,24 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.*;
 import java.sql.Date;
 
-enum WantyAttributes {
-    TITLE("title"),
-    MAP("map"),
-    WANTY("wanty"),
-    STATISTICS("Статистика"),
-    WANTIES("wanties");
-
-    private final String value;
-
-    WantyAttributes(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-}
-
 @Controller
 public class WantyController {
     @Autowired
@@ -43,8 +27,8 @@ public class WantyController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute(WantyAttributes.TITLE.getValue(), "Главная");
-        model.addAttribute("wanties", wantyService.getAllTheWanties());
+        model.addAttribute(WantyAttributes.TITLE.getValue(), WantyAttributes.MAIN.getValue());
+        model.addAttribute(WantyAttributes.WANTIES.getValue(), wantyService.getAllTheWanties());
         model.addAttribute(WantyAttributes.MAP.getValue(), personService.getAllThePeople());
 
         return "main";
@@ -52,8 +36,7 @@ public class WantyController {
 
     @GetMapping("/add-wanty")
     public String addWanty(Model model) {
-        model.addAttribute(WantyAttributes.TITLE.getValue(), "Добавление запроса");
-
+        model.addAttribute(WantyAttributes.TITLE.getValue(), WantyAttributes.ADDING_REQUEST);
         model.addAttribute(WantyAttributes.MAP.getValue(), personService.getAllThePeople());
 
         return "add-wanty";
@@ -72,25 +55,26 @@ public class WantyController {
 
     @GetMapping("/wanty/{wantyId}")
     public String wantyCard(@PathVariable(value = "wantyId") long wantyId, Model model) {
-        model.addAttribute(WantyAttributes.TITLE.getValue(), "Карточка запроса");
+        model.addAttribute(WantyAttributes.TITLE.getValue(), WantyAttributes.REQUEST_CARD.getValue());
 
         ArrayList<Wanty> wanty = wantyService.getWanty(wantyId);
         model.addAttribute(WantyAttributes.WANTY.getValue(), wanty);
 
-        model.addAttribute("sellerName", personService.getPersonFullName(wanty.get(0).getSellerId()));
+        model.addAttribute(WantyAttributes.SELLER_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getSellerId()));
 
-        model.addAttribute("buyerName", personService.getPersonFullName(wanty.get(0).getBuyerId()));
+        model.addAttribute(WantyAttributes.BUYER_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getBuyerId()));
 
-        model.addAttribute("clientName", personService.getPersonFullName(wanty.get(0).getClientId()));
+        model.addAttribute(WantyAttributes.CLIENT_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getClientId()));
 
-        model.addAttribute("isPurchased", wanty.get(0).isPurchased() ? "был куплен" : "не был куплен");
+        model.addAttribute(WantyAttributes.IS_PURCHASED.getValue(), wanty.get(0).isPurchased() ?
+                WantyAttributes.PURCHASED.getValue() : WantyAttributes.NOT_PURCHASED.getValue());
 
         return "wanty-card";
     }
 
     @GetMapping("/wanty/{wantyId}/edit")
     public String editWanty(@PathVariable("wantyId") long wantyId, Model model) {
-        model.addAttribute(WantyAttributes.TITLE.getValue(), "Редактирование запроса");
+        model.addAttribute(WantyAttributes.TITLE.getValue(), WantyAttributes.EDITING_REQUEST.getValue());
 
         List<Wanty> wanty = wantyService.getWanty(wantyId);
         model.addAttribute(WantyAttributes.WANTY.getValue(), wanty);
@@ -99,9 +83,9 @@ public class WantyController {
         List<Person> curBuyer = personService.getPersonAsList(wanty.get(0).getBuyerId());
         List<Person> curClient = personService.getPersonAsList(wanty.get(0).getClientId());
 
-        model.addAttribute("curSeller", curSeller);
-        model.addAttribute("curBuyer", curBuyer);
-        model.addAttribute("curClient", curClient);
+        model.addAttribute(WantyAttributes.CURRENT_SELLER.getValue(), curSeller);
+        model.addAttribute(WantyAttributes.CURRENT_BUYER.getValue(), curBuyer);
+        model.addAttribute(WantyAttributes.CURRENT_CLIENT.getValue(), curClient);
 
         model.addAttribute(WantyAttributes.MAP.getValue(),
                 personService.removeCurrents(curSeller.get(0), curBuyer.get(0), curClient.get(0)));
@@ -135,12 +119,12 @@ public class WantyController {
 
         ArrayList<HashMap<String, SoldInfo>> wanties = wantyService.getStartStatistics();
 
-        model.addAttribute("wantiesSeller", wanties.get(0));
-        model.addAttribute("wantiesBuyer", wanties.get(1));
-        model.addAttribute("wantiesClient", wanties.get(2));
+        model.addAttribute(WantyAttributes.WANTIES_SELLER.getValue(), wanties.get(0));
+        model.addAttribute(WantyAttributes.WANTIES_BUYER.getValue(), wanties.get(1));
+        model.addAttribute(WantyAttributes.WANTIES_CLIENT.getValue(), wanties.get(2));
 
-        model.addAttribute("date1", null);
-        model.addAttribute("date2", null);
+        model.addAttribute(WantyAttributes.DATE1.getValue(), null);
+        model.addAttribute(WantyAttributes.DATE2.getValue(), null);
 
         return "statistics";
     }
@@ -151,12 +135,12 @@ public class WantyController {
 
         ArrayList<HashMap<String, SoldInfo>> wanties = wantyService.getStatistics(date1, date2);
 
-        model.addAttribute("wantiesSeller", wanties.get(0));
-        model.addAttribute("wantiesBuyer", wanties.get(1));
-        model.addAttribute("wantiesClient", wanties.get(2));
+        model.addAttribute(WantyAttributes.WANTIES_SELLER.getValue(), wanties.get(0));
+        model.addAttribute(WantyAttributes.WANTIES_BUYER.getValue(), wanties.get(1));
+        model.addAttribute(WantyAttributes.WANTIES_CLIENT.getValue(), wanties.get(2));
 
-        model.addAttribute("date1", date1);
-        model.addAttribute("date2", date2);
+        model.addAttribute(WantyAttributes.DATE1.getValue(), date1);
+        model.addAttribute(WantyAttributes.DATE2.getValue(), date2);
 
         return "statistics";
     }
