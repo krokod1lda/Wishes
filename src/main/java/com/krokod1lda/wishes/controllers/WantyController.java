@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.sql.Date;
 
@@ -36,7 +38,7 @@ public class WantyController {
 
     @GetMapping("/add-wanty")
     public String addWanty(Model model) {
-        model.addAttribute(WantyAttributes.TITLE.getValue(), WantyAttributes.ADDING_REQUEST);
+        model.addAttribute(WantyAttributes.TITLE.getValue(), WantyAttributes.ADDING_REQUEST.getValue());
         model.addAttribute(WantyAttributes.MAP.getValue(), personService.getAllThePeople());
 
         return "add-wanty";
@@ -46,9 +48,10 @@ public class WantyController {
     public String addWanty(@RequestParam("name") String name, @RequestParam("date") Date date,
                            @RequestParam("size") String size, @RequestParam("seller") long sellerId,
                            @RequestParam("buyer") long buyerId, @RequestParam("client") long clientId,
-                           @RequestParam("isPurchased") boolean isPurchased, @RequestParam("description") String description) {
+                           @RequestParam("isPurchased") boolean isPurchased, @RequestParam("description") String description,
+                           @RequestParam(value = "wantyPhoto", required = false) MultipartFile wantyPhoto) {
 
-        wantyService.addWanty(name, date, size, sellerId, buyerId, clientId, isPurchased, description);
+        wantyService.addWanty(name, date, size, sellerId, buyerId, clientId, isPurchased, description, wantyPhoto);
 
         return "redirect:/";
     }
@@ -60,10 +63,11 @@ public class WantyController {
         ArrayList<Wanty> wanty = wantyService.getWanty(wantyId);
         model.addAttribute(WantyAttributes.WANTY.getValue(), wanty);
 
+        // Доделать фото
+        model.addAttribute(WantyAttributes.WANTY_PHOTO.getValue(), wantyService.getPhotoBase64(wanty.get(0).getWantyPhoto()));
+
         model.addAttribute(WantyAttributes.SELLER_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getSellerId()));
-
         model.addAttribute(WantyAttributes.BUYER_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getBuyerId()));
-
         model.addAttribute(WantyAttributes.CLIENT_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getClientId()));
 
         model.addAttribute(WantyAttributes.IS_PURCHASED.getValue(), wanty.get(0).isPurchased() ?
@@ -78,6 +82,7 @@ public class WantyController {
 
         List<Wanty> wanty = wantyService.getWanty(wantyId);
         model.addAttribute(WantyAttributes.WANTY.getValue(), wanty);
+        model.addAttribute(WantyAttributes.WANTY_PHOTO.getValue(), wantyService.getPhotoBase64(wanty.get(0).getWantyPhoto()));
 
         List<Person> curSeller = personService.getPersonAsList(wanty.get(0).getSellerId());
         List<Person> curBuyer = personService.getPersonAsList(wanty.get(0).getBuyerId());
@@ -98,10 +103,11 @@ public class WantyController {
                             @RequestParam("date") Date date, @RequestParam("size") String size,
                             @RequestParam("seller") long sellerId, @RequestParam("buyer") long buyerId,
                             @RequestParam("client") long clientId, @RequestParam("isPurchased") boolean isPurchased,
-                            @RequestParam("description") String description) {
+                            @RequestParam("description") String description,
+                            @RequestParam(value = "wantyPhoto", required = false) MultipartFile wantyPhoto) {
 
         wantyService.updateWanty(wantyId, name, date, size, sellerId, buyerId,
-                clientId, isPurchased, description);
+                clientId, isPurchased, description, wantyPhoto);
 
         return "redirect:/";
     }

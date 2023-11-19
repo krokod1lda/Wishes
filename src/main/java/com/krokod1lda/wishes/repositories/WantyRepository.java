@@ -31,7 +31,7 @@ public interface WantyRepository extends CrudRepository<Wanty, Long> {
             nativeQuery = true)
     void deleteAllTheWantiesByPersonId(@Param("id") long id);
 
-    @Query(value = "select * from wanty where date > :date1 and date < :date2 order by date asc",
+    @Query(value = "select * from wanty where date between :date1 and :date2 order by date asc",
             nativeQuery = true)
     ArrayList<Wanty> getEntriesByDates(@Param("date1") Date date1, @Param("date2") Date date2);
 

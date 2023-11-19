@@ -1,14 +1,17 @@
 package com.krokod1lda.wishes.models;
 
 import jakarta.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.util.Base64;
 
 @Entity
 public class Wanty {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String wantyName;
     @Column(columnDefinition = "DATE")
@@ -20,13 +23,12 @@ public class Wanty {
     private boolean isPurchased;
     @Column(columnDefinition = "TEXT")
     private String description;
-
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB")
     private byte[] wantyPhoto;
 
     public Wanty(String wantyName, Date date, String size, long sellerId, long buyerId,
-                 long clientId, boolean isPurchased, String description, byte[] wantyPhoto) {
+                 long clientId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
 
         this.wantyName = wantyName;
         this.date = date;
@@ -36,7 +38,7 @@ public class Wanty {
         this.clientId = clientId;
         this.isPurchased = isPurchased;
         this.description = description;
-        this.wantyPhoto = wantyPhoto;
+        this.wantyPhoto = photoMultipartToByte(wantyPhoto);
     }
 
     public Wanty() {}
@@ -122,7 +124,7 @@ public class Wanty {
     }
 
     public void update(String wantyName, Date date, String size, long sellerId, long buyerId,
-                        long clientId, boolean isPurchased, String description, byte[] wantyPhoto) {
+                        long clientId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
 
         this.wantyName = wantyName;
         this.date = date;
@@ -132,6 +134,26 @@ public class Wanty {
         this.clientId = clientId;
         this.isPurchased = isPurchased;
         this.description = description;
-        this.wantyPhoto = wantyPhoto;
+
+        if(wantyPhoto != null)
+            this.wantyPhoto = photoMultipartToByte(wantyPhoto);
+    }
+
+    public byte[] photoMultipartToByte(MultipartFile nonBinPhoto) {
+        byte[] wantyPhoto = null;
+
+        if (nonBinPhoto != null) {
+            try {
+                wantyPhoto = new byte[nonBinPhoto.getBytes().length];
+                int i = 0;
+
+                for (byte b : nonBinPhoto.getBytes())
+                    wantyPhoto[i++] = b;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return wantyPhoto;
     }
 }

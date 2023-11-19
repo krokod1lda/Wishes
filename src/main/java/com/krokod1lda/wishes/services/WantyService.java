@@ -8,12 +8,11 @@ import com.krokod1lda.wishes.repositories.PersonRepository;
 import com.krokod1lda.wishes.repositories.WantyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class WantyService {
@@ -22,16 +21,21 @@ public class WantyService {
     @Autowired
     private PersonRepository personRepository;
 
-    public ArrayList<Wanty> getAllTheWanties() {
+    public LinkedHashMap<Wanty, String> getAllTheWanties() {
+        ArrayList<Wanty> wanties = wantyRepository.findAllDesc();
+        LinkedHashMap<Wanty, String> map = new LinkedHashMap<>();
 
-        return wantyRepository.findAllDesc();
+        for(Wanty wanty : wanties)
+            map.put(wanty, getPhotoBase64(wanty.getWantyPhoto()));
+
+        return map;
     }
 
-    public void addWanty(String name, Date date, String size, long sellerId,
-                          long buyerId, long clientId, boolean isPurchased, String description) {
+    public void addWanty(String name, Date date, String size, long sellerId, long buyerId,
+                         long clientId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
 
         Wanty wanty = new Wanty(name, date, size, sellerId, buyerId, clientId,
-                isPurchased, description, null);
+                isPurchased, description, wantyPhoto);
 
         wantyRepository.save(wanty);
 
@@ -67,7 +71,7 @@ public class WantyService {
     }
 
     public void updateWanty(long wantyId, String name, Date date, String size, long sellerId,
-                              long buyerId, long clientId, boolean isPurchased, String description) {
+                              long buyerId, long clientId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
 
         Wanty wanty = wantyRepository.findById(wantyId).orElseThrow();
 
@@ -109,7 +113,7 @@ public class WantyService {
             changePurchased(clientId, isPurchased);
 
         wanty.update(name, date, size, sellerId, buyerId,
-                clientId, isPurchased, description, null);
+                clientId, isPurchased, description, wantyPhoto);
 
         wantyRepository.save(wanty);
     }
@@ -217,6 +221,22 @@ public class WantyService {
                     soldInfoHashMap.get(id));
 
         return result;
+    }
+
+    public String getPhotoBase64(byte[] bytePhoto) {
+
+        return photoByteToBase64(bytePhoto);
+    }
+
+    private String photoByteToBase64(byte[] bytePhoto) {
+        String wantyPhoto = null;
+
+        if (bytePhoto != null) {
+            byte[] encodeBase64 = Base64.getEncoder().encode(bytePhoto);
+            wantyPhoto = new String(encodeBase64, StandardCharsets.UTF_8);
+        }
+
+        return wantyPhoto;
     }
 
     private void increaseWithStatistics(long sellerId, long buyerId, long clientId, boolean isPurchased) {

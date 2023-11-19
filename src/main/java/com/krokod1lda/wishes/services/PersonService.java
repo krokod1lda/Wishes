@@ -2,7 +2,6 @@ package com.krokod1lda.wishes.services;
 
 import com.krokod1lda.wishes.EntityAttributes.PersonAttributes;
 import com.krokod1lda.wishes.models.Person;
-import com.krokod1lda.wishes.models.Wanty;
 import com.krokod1lda.wishes.repositories.PersonRepository;
 import com.krokod1lda.wishes.repositories.WantyRepository;
 import org.springframework.beans.factory.annotation.Autowired;

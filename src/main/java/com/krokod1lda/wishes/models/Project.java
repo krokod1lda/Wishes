@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Project {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     String name;
     int totally;

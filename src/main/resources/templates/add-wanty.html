@@ -24,9 +24,8 @@
                 <h5 class="mb-3">Добавление фото</h5>
 
                 <div class="card p-2">
-                    <input class="form-control" id="fileUploadId" type="file" name="fileupload"/>
-                    <button class="btn btn-light forButtons mt-1" id="upload-button" onclick="previewImage();">Посмотреть изображение</button>
-                    <img id="image" style="display:none" class="img img-thumbnail">
+                    <img id="imageId" style="display:none" class="img rounded">
+                    <input class="form-control" id="fileUploadId" type="file" name="fileupload" oninput="previewImage();"/>
                 </div>
             </div>
 
@@ -148,7 +147,7 @@
 
     function previewImage() {
         let input = document.getElementById('fileUploadId');
-        let preview = document.getElementById('image');
+        let preview = document.getElementById('imageId');
         let reader = new FileReader();
 
         reader.onload = function() {
@@ -159,17 +158,17 @@
     }
 
     async function addWanty() {
-
         let formData = new FormData();
 
-        let name = document.getElementById('nameId');
-        let date = document.getElementById('dateId');
-        let size = document.getElementById('sizeId');
-        let seller = document.getElementById('sellerId');
-        let buyer = document.getElementById('buyerId');
-        let client = document.getElementById('clientId');
-        let isPurchased = document.getElementById('purchasedId').checked;
-        let description = document.getElementById('descriptionId');
+        const name = document.getElementById('nameId');
+        const date = document.getElementById('dateId');
+        const size = document.getElementById('sizeId');
+        const seller = document.getElementById('sellerId');
+        const buyer = document.getElementById('buyerId');
+        const client = document.getElementById('clientId');
+        const isPurchased = document.getElementById('purchasedId').checked;
+        const description = document.getElementById('descriptionId');
+        let wantyPhoto = document.getElementById('fileUploadId');
 
         formData.append('name', name.value);
         formData.append('date', date.value);
@@ -179,6 +178,7 @@
         formData.append('client', client.value);
         formData.append('isPurchased', isPurchased);
         formData.append('description', description.value);
+        formData.append('wantyPhoto', wantyPhoto.files[0]);
 
         await fetch('/add-wanty', {
             method: 'POST',

@@ -22,9 +22,8 @@
         <div class="row g-5">
             <div class="col-md-5 col-lg-5 order-md-last">
                 <div class="card p-2">
-                    <img id="image" src="/test.jpeg" class="img img-thumbnail" alt="pic)">
-                    <input class="form-control" id="fileUploadId" type="file" name="fileupload"/>
-                    <button class="btn btn-light forButtons mt-1" id="upload-button" onclick="previewImage();">Посмотреть изображение</button>
+                    <img id="imageId" th:src="@{'data:image/png;base64, ' + ${wantyPhoto}}" onerror="this.src='/images/defaultWanty.jpeg';" alt="sorry" class="img rounded">
+                    <input class="form-control" id="fileUploadId" type="file" name="fileupload" oninput="previewImage();"/>
                 </div>
             </div>
 
@@ -155,7 +154,7 @@
 
     function previewImage() {
         let input = document.getElementById('fileUploadId');
-        let preview = document.getElementById('image');
+        let preview = document.getElementById('imageId');
         let reader = new FileReader();
 
         reader.onload = function() {
@@ -170,14 +169,15 @@
 
         const id = document.getElementById('ID').getAttribute('data');
 
-        let name = document.getElementById('nameId');
-        let date = document.getElementById('dateId');
-        let size = document.getElementById('sizeId');
-        let seller = document.getElementById('sellerId');
-        let buyer = document.getElementById('buyerId');
-        let client = document.getElementById('clientId');
-        let isPurchased = document.getElementById('purchasedId').checked;
-        let description = document.getElementById('descriptionId');
+        const name = document.getElementById('nameId');
+        const date = document.getElementById('dateId');
+        const size = document.getElementById('sizeId');
+        const seller = document.getElementById('sellerId');
+        const buyer = document.getElementById('buyerId');
+        const client = document.getElementById('clientId');
+        const isPurchased = document.getElementById('purchasedId').checked;
+        const description = document.getElementById('descriptionId');
+        const wantyPhoto = document.getElementById('fileUploadId');
 
         formData.append('name', name.value);
         formData.append('date', date.value);
@@ -187,6 +187,7 @@
         formData.append('client', client.value);
         formData.append('isPurchased', isPurchased);
         formData.append('description', description.value);
+        formData.append('wantyPhoto', wantyPhoto.files[0])
 
         const fetchURL = "/wanty/" + id + "/edit";
         const replaceURL = "/wanty/" + id;

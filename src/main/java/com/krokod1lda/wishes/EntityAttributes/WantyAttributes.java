@@ -3,7 +3,7 @@ package com.krokod1lda.wishes.EntityAttributes;
 public enum WantyAttributes {
     TITLE("title"),
     MAP("map"),
-    WANTY("wanty"), WANTIES("wanties"),
+    WANTY("wanty"), WANTIES("wanties"), WANTY_PHOTO("wantyPhoto"),
     STATISTICS("Статистика"),
     MAIN("Главная"),
     ADDING_REQUEST("Добавление запроса"), REQUEST_CARD("Карточка запроса"), EDITING_REQUEST("Редактирование запроса"),
