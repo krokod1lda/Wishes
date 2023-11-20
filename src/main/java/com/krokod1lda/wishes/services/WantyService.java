@@ -50,24 +50,52 @@ public class WantyService {
         return res;
     }
 
-    public ArrayList<Wanty> getWanty(String wantyName) {
+    public LinkedHashMap<Wanty, String> getWanty(String wantyName) {
+        ArrayList<Wanty> wanties;
+        wanties = wantyRepository.findByWantyName(wantyName);
 
-        return wantyRepository.findByWantyName(wantyName);
+        LinkedHashMap<Wanty, String> map = new LinkedHashMap<>();
+
+        for(Wanty wanty : wanties)
+            map.put(wanty, getPhotoBase64(wanty.getWantyPhoto()));
+
+        return map;
     }
 
-    public List<Wanty> getWishesByBuyer(long personId) {
+    public LinkedHashMap<Wanty, String> getWishesByBuyer(long personId) {
+        ArrayList<Wanty> wanties;
+        wanties = wantyRepository.findByBuyerId(personId);
 
-        return wantyRepository.findByBuyerId(personId);
+        LinkedHashMap<Wanty, String> map = new LinkedHashMap<>();
+
+        for(Wanty wanty : wanties)
+            map.put(wanty, getPhotoBase64(wanty.getWantyPhoto()));
+
+        return map;
     }
 
-    public List<Wanty> getWishesBySeller(long personId) {
+    public LinkedHashMap<Wanty, String> getWishesBySeller(long personId) {
+        ArrayList<Wanty> wanties;
+        wanties = wantyRepository.findBySellerId(personId);
 
-        return wantyRepository.findBySellerId(personId);
+        LinkedHashMap<Wanty, String> map = new LinkedHashMap<>();
+
+        for(Wanty wanty : wanties)
+            map.put(wanty, getPhotoBase64(wanty.getWantyPhoto()));
+
+        return map;
     }
 
-    public List<Wanty> getWishesByClient(long personId) {
+    public LinkedHashMap<Wanty, String> getWishesByClient(long personId) {
+        ArrayList<Wanty> wanties;
+        wanties = wantyRepository.findByClientId(personId);
 
-        return wantyRepository.findByClientId(personId);
+        LinkedHashMap<Wanty, String> map = new LinkedHashMap<>();
+
+        for(Wanty wanty : wanties)
+            map.put(wanty, getPhotoBase64(wanty.getWantyPhoto()));
+
+        return map;
     }
 
     public void updateWanty(long wantyId, String name, Date date, String size, long sellerId,
