@@ -15,7 +15,7 @@ public class Project {
     int purchased;
     boolean isArchived;
 
-    public Project(String name, String phone) {
+    public Project(String name) {
         this.name = name;
         this.totally = 0;
         this.purchased = 0;
@@ -23,6 +23,8 @@ public class Project {
     }
 
     public Project() {}
+
+    public long getId() {return id;}
 
     public String getName() {
         return name;

@@ -77,7 +77,7 @@ public class PersonController {
         return "redirect:/all-persons";
     }
 
-    @GetMapping("/archived/{id}")
+    @GetMapping("/archivedPerson/{id}")
     public String archivedPerson(@PathVariable("id") long id, Model model) {
         model.addAttribute(PersonAttributes.PERSON.getValue(), personService.updatePerson(id));
         model.addAttribute(PersonAttributes.TITLE.getValue(), PersonAttributes.EDITING_ARCHIVED_PARTICIPANT.getValue());

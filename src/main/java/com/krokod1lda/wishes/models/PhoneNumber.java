@@ -11,10 +11,11 @@ public class PhoneNumber {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     long projectId;
+    String phoneNumber;
 
-    public PhoneNumber(long id, long projectId) {
-        this.id = id;
+    public PhoneNumber(long projectId, String phoneNumber) {
         this.projectId = projectId;
+        this.phoneNumber = phoneNumber;
     }
 
     public PhoneNumber() {
@@ -35,4 +36,8 @@ public class PhoneNumber {
     public void setProjectId(long projectId) {
         this.projectId = projectId;
     }
+
+    public String getPhoneNumber() {return phoneNumber;}
+
+    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
 }
