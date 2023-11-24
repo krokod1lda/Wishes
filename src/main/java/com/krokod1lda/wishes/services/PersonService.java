@@ -87,20 +87,16 @@ public class PersonService {
         ArrayList<Wanty> wanties = new ArrayList<>();
         Person person = personRepository.findById(id).orElseThrow();
         if (Objects.equals(person.getType(), "seller")) {
-            System.out.println("It's seller");
             wanties = wantyRepository.findBySellerId(id);
         }
         else if (Objects.equals(person.getType(), "buyer")) {
-            System.out.println("It's buyer");
             wanties = wantyRepository.findByBuyerId(id);
         }
         else {
-            System.out.println("It's client");
             wanties = wantyRepository.findByClientId(id);
         }
 
         for (Wanty el : wanties) {
-            System.out.println("DELETED WANTY " + el.getWantyName());
             wantyService.deleteWanty(el.getId());
         }
         personRepository.deleteById(id);

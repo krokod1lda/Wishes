@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.sql.Date;
 
@@ -139,6 +138,7 @@ public class WantyController {
         model.addAttribute(WantyAttributes.WANTIES_SELLER.getValue(), wanties.get(0));
         model.addAttribute(WantyAttributes.WANTIES_BUYER.getValue(), wanties.get(1));
         model.addAttribute(WantyAttributes.WANTIES_CLIENT.getValue(), wanties.get(2));
+        model.addAttribute(WantyAttributes.WANTIES_PROJECT.getValue(), wanties.get(3));
 
         model.addAttribute(WantyAttributes.DATE1.getValue(), null);
         model.addAttribute(WantyAttributes.DATE2.getValue(), null);
@@ -155,6 +155,7 @@ public class WantyController {
         model.addAttribute(WantyAttributes.WANTIES_SELLER.getValue(), wanties.get(0));
         model.addAttribute(WantyAttributes.WANTIES_BUYER.getValue(), wanties.get(1));
         model.addAttribute(WantyAttributes.WANTIES_CLIENT.getValue(), wanties.get(2));
+        model.addAttribute(WantyAttributes.WANTIES_PROJECT.getValue(), wanties.get(3));
 
         model.addAttribute(WantyAttributes.DATE1.getValue(), date1);
         model.addAttribute(WantyAttributes.DATE2.getValue(), date2);

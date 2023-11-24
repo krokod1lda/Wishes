@@ -123,7 +123,6 @@ public class ProjectService {
     public void deleteProject(long id) {
         ArrayList<Wanty> wanties = wantyRepository.findByProjectId(id);
         for (Wanty el : wanties) {
-            System.out.println("DELETED WANTY " + el.getWantyName());
             wantyService.deleteWanty(el.getId());
         }
         phoneNumberRepository.deletePhoneNumbersByProjectId(id);

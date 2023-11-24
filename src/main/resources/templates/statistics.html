@@ -103,6 +103,28 @@
             </div>
 
             </tbody>
+
+            <thead>
+            <tr class="forTrTables">
+                <th scope="col">Проект</th>
+                <th scope="col">Всего</th>
+                <th scope="col">Купили</th>
+                <th scope="col">Не купили</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <div th:each="el : ${wantiesProject.keySet()}">
+                <tr>
+                    <td th:text="${el}"/>
+                    <td th:text="${wantiesProject.get(el).getTotally()}"/>
+                    <td th:text="${wantiesProject.get(el).getPurchased()}"/>
+                    <td th:text="${wantiesProject.get(el).getNotPurchased()}"/>
+                </tr>
+            </div>
+
+            </tbody>
         </table>
     </div>
 </div>

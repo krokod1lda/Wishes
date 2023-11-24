@@ -57,4 +57,24 @@ public class Project {
     public void setArchived(boolean archived) {
         isArchived = archived;
     }
+
+    public void increase(boolean isPurchased) {
+        ++this.totally;
+
+        if (isPurchased) {
+            ++this.purchased;
+        }
+    }
+    public void decrease(boolean isPurchased) {
+        --this.totally;
+
+        if (isPurchased)
+            --this.purchased;
+    }
+    public void increasePurchased() {
+        ++this.purchased;
+    }
+    public void decreasePurchased() {
+        --this.purchased;
+    }
 }
