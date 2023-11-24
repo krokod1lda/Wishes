@@ -40,6 +40,21 @@ public class ProjectService {
         Iterable<Project> projects = projectRepository.findAll();
         return projects;
     }
+
+    public List<Project> deleteCurrentProject(Iterable<Project> projects, Project curProject) {
+        List<Project> projectsWithoutCur = iterableToList(projects);
+        projectsWithoutCur.remove(curProject);
+        return projectsWithoutCur;
+    }
+
+    public static <E> List<E> iterableToList(Iterable<E> iterable) {
+        List<E> list = new ArrayList<>();
+        for (E element : iterable) {
+            list.add(element);
+        }
+        return list;
+    }
+
     public ArrayList<Project> updateProject(long id) {
         Optional<Project> project = projectRepository.findById(id);
         ArrayList<Project> res = new ArrayList<>();
@@ -98,5 +113,14 @@ public class ProjectService {
 
         Project project = projectRepository.findById(id).orElseThrow();
         projectRepository.delete(project);
+    }
+    public String getProjectName(long id) {
+
+        Project project = projectRepository.findById(id).orElseThrow();
+        return project.getName();
+    }
+    public Project getProject(long id) {
+
+        return projectRepository.findById(id).orElseThrow();
     }
 }

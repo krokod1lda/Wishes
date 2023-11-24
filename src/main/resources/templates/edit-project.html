@@ -172,7 +172,7 @@
         let formData = new FormData();
         formData.append('phoneNumberId', id);
 
-        await fetch('/deletePhoneNumber' + id, {
+        await fetch('/deletePhoneNumber', {
             method: 'POST',
             body: formData
         })
@@ -188,12 +188,6 @@
             return; // Прервать выполнение функции в случае незаполненного значения
         }
 
-        // let phone_val = document.getElementById('phoneNumberId').value;
-        //
-        // if (phone_val === "") {
-        //     alert("Пожалуйста, введите хотя бы один номер телефона"); // МОЖЕТ РАБОТАТЬ НЕКОРРЕКТНО
-        //     return; // Прервать выполнение функции в случае незаполненного значения
-        // }
         return updateProject();
     }
 

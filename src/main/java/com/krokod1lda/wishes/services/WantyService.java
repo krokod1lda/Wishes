@@ -32,9 +32,9 @@ public class WantyService {
     }
 
     public void addWanty(String name, Date date, String size, long sellerId, long buyerId,
-                         long clientId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
+                         long clientId, long projectId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
 
-        Wanty wanty = new Wanty(name, date, size, sellerId, buyerId, clientId,
+        Wanty wanty = new Wanty(name, date, size, sellerId, buyerId, clientId, projectId,
                 isPurchased, description, wantyPhoto);
 
         wantyRepository.save(wanty);
@@ -99,13 +99,14 @@ public class WantyService {
     }
 
     public void updateWanty(long wantyId, String name, Date date, String size, long sellerId,
-                              long buyerId, long clientId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
+                              long buyerId, long clientId, long projectId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
 
         Wanty wanty = wantyRepository.findById(wantyId).orElseThrow();
 
         boolean isSellerChanged = false;
         boolean isBuyerChanged = false;
         boolean isClientChanged = false;
+//        boolean isProjectChanged = false; Использовать потом при создании статистики
 
         // if seller is changed
         if(wanty.getSellerId() != sellerId) {
@@ -141,7 +142,7 @@ public class WantyService {
             changePurchased(clientId, isPurchased);
 
         wanty.update(name, date, size, sellerId, buyerId,
-                clientId, isPurchased, description, wantyPhoto);
+                clientId, projectId, isPurchased, description, wantyPhoto);
 
         wantyRepository.save(wanty);
     }

@@ -20,13 +20,9 @@ public class PersonService {
         Person person = new Person(type, name, surname);
         personRepository.save(person);
     }
+    public Person getPerson(long id) {
 
-    public List<Person> getPersonAsList(long id) {
-        Optional<Person> person = personRepository.findById(id);
-        List<Person> personList = new ArrayList<>();
-        person.ifPresent(personList::add);
-
-        return personList;
+        return personRepository.findById(id).orElseThrow();
     }
 
     public Map<String, List<Person>> getPeopleMapForAllPersonsPage() {

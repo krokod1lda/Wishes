@@ -57,8 +57,8 @@
                         <div class="col-sm-6">
                             <label for="sellerId" class="form-label">Продавец</label>
                             <select class="form-select" id="sellerId">
-                                <option th:value="${curSeller.get(0).id}"
-                                        th:text="${curSeller.get(0).surname + ' ' + curSeller.get(0).name}">
+                                <option th:value="${curSeller.id}"
+                                        th:text="${curSeller.surname + ' ' + curSeller.name}">
                                 </option>
 
                                 <div th:each="el : ${map.get('sellers')}">
@@ -74,8 +74,8 @@
                         <div class="col-sm-6">
                             <label for="buyerId" class="form-label">Байер</label>
                             <select class="form-select" id="buyerId">
-                                <option th:value="${curBuyer.get(0).id}"
-                                        th:text="${curBuyer.get(0).surname + ' ' + curBuyer.get(0).name}">
+                                <option th:value="${curBuyer.id}"
+                                        th:text="${curBuyer.surname + ' ' + curBuyer.name}">
                                 </option>
 
                                 <div th:each="el : ${map.get('buyers')}">
@@ -91,14 +91,31 @@
                         <div class="col-sm-6">
                             <label for="clientId" class="form-label">Клиент</label>
                             <select class="form-select" id="clientId">
-                                <option th:value="${curClient.get(0).id}"
-                                        th:text="${curClient.get(0).surname + ' ' + curClient.get(0).name}">
+                                <option th:value="${curClient.id}"
+                                        th:text="${curClient.surname + ' ' + curClient.name}">
                                 </option>
 
                                 <div th:each="el : ${map.get('clients')}">
                                     <option th:value="${el.id}"
                                             th:text="${el.archived ? '(Архив) ' + el.surname + ' ' + el.name :
                                             el.surname + ' ' + el.name}"></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="col-sm-6">
+                            <label for="projectId" class="form-label">Проект</label>
+                            <select class="form-select" id="projectId">
+                                <option th:value="${curProject.id}"
+                                        th:text="${curProject.name}">
+                                </option>
+
+                                <div th:each="el : ${projects}">
+                                    <option th:value="${el.id}"
+                                            th:text="${el.archived ? '(Архив) ' + el.name :
+                                            el.name}"></option>
                                 </div>
                             </select>
                         </div>
@@ -175,6 +192,7 @@
         const seller = document.getElementById('sellerId');
         const buyer = document.getElementById('buyerId');
         const client = document.getElementById('clientId');
+        const project = document.getElementById('projectId');
         const isPurchased = document.getElementById('purchasedId').checked;
         const description = document.getElementById('descriptionId');
         const wantyPhoto = document.getElementById('fileUploadId');
@@ -185,6 +203,7 @@
         formData.append('seller', seller.value);
         formData.append('buyer', buyer.value);
         formData.append('client', client.value);
+        formData.append('project', project.value);
         formData.append('isPurchased', isPurchased);
         formData.append('description', description.value);
         formData.append('wantyPhoto', wantyPhoto.files[0])
@@ -208,23 +227,26 @@
         }
 
         let seller_val = document.getElementById('sellerId').value;
-
         if (seller_val === "") {
             alert("Пожалуйста, выберите продавца.");
             return;
         }
 
         let buyer_val = document.getElementById('buyerId').value;
-
         if (buyer_val === "") {
             alert("Пожалуйста, выберите байера.");
             return;
         }
 
         let client_val = document.getElementById('clientId').value;
-
         if (client_val === "") {
             alert("Пожалуйста, выберите клиента.");
+            return;
+        }
+
+        let project_val = document.getElementById('projectId').value;
+        if (project_val === "") {
+            alert("Пожалуйста, выберите проект.");
             return;
         }
 

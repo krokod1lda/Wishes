@@ -1,11 +1,14 @@
 package com.krokod1lda.wishes.controllers;
 
 import com.krokod1lda.wishes.EntityAttributes.PersonAttributes;
+import com.krokod1lda.wishes.EntityAttributes.ProjectAttributes;
 import com.krokod1lda.wishes.EntityAttributes.WantyAttributes;
 import com.krokod1lda.wishes.Structures.SoldInfo;
 import com.krokod1lda.wishes.models.Person;
+import com.krokod1lda.wishes.models.Project;
 import com.krokod1lda.wishes.models.Wanty;
 import com.krokod1lda.wishes.services.PersonService;
+import com.krokod1lda.wishes.services.ProjectService;
 import com.krokod1lda.wishes.services.WantyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +29,8 @@ public class WantyController {
     PersonService personService;
     @Autowired
     WantyService wantyService;
+    @Autowired
+    ProjectService projectService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -40,6 +45,7 @@ public class WantyController {
     public String addWanty(Model model) {
         model.addAttribute(WantyAttributes.TITLE.getValue(), WantyAttributes.ADDING_REQUEST.getValue());
         model.addAttribute(WantyAttributes.MAP.getValue(), personService.getAllThePeople());
+        model.addAttribute(WantyAttributes.PROJECTS.getValue(), projectService.getAllTheProjects());
 
         return "add-wanty";
     }
@@ -48,10 +54,11 @@ public class WantyController {
     public String addWanty(@RequestParam("name") String name, @RequestParam("date") Date date,
                            @RequestParam("size") String size, @RequestParam("seller") long sellerId,
                            @RequestParam("buyer") long buyerId, @RequestParam("client") long clientId,
-                           @RequestParam("isPurchased") boolean isPurchased, @RequestParam("description") String description,
+                           @RequestParam("project") long projectId, @RequestParam("isPurchased") boolean isPurchased,
+                           @RequestParam("description") String description,
                            @RequestParam(value = "wantyPhoto", required = false) MultipartFile wantyPhoto) {
 
-        wantyService.addWanty(name, date, size, sellerId, buyerId, clientId, isPurchased, description, wantyPhoto);
+        wantyService.addWanty(name, date, size, sellerId, buyerId, clientId, projectId, isPurchased, description, wantyPhoto);
 
         return "redirect:/";
     }
@@ -69,6 +76,7 @@ public class WantyController {
         model.addAttribute(WantyAttributes.SELLER_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getSellerId()));
         model.addAttribute(WantyAttributes.BUYER_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getBuyerId()));
         model.addAttribute(WantyAttributes.CLIENT_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getClientId()));
+        model.addAttribute(WantyAttributes.PROJECT_NAME.getValue(), projectService.getProjectName(wanty.get(0).getProjectId()));
 
         model.addAttribute(WantyAttributes.IS_PURCHASED.getValue(), wanty.get(0).isPurchased() ?
                 WantyAttributes.PURCHASED.getValue() : WantyAttributes.NOT_PURCHASED.getValue());
@@ -84,16 +92,20 @@ public class WantyController {
         model.addAttribute(WantyAttributes.WANTY.getValue(), wanty);
         model.addAttribute(WantyAttributes.WANTY_PHOTO.getValue(), wantyService.getPhotoBase64(wanty.get(0).getWantyPhoto()));
 
-        List<Person> curSeller = personService.getPersonAsList(wanty.get(0).getSellerId());
-        List<Person> curBuyer = personService.getPersonAsList(wanty.get(0).getBuyerId());
-        List<Person> curClient = personService.getPersonAsList(wanty.get(0).getClientId());
+        Person curSeller = personService.getPerson(wanty.get(0).getSellerId());
+        Person curBuyer = personService.getPerson(wanty.get(0).getBuyerId());
+        Person curClient = personService.getPerson(wanty.get(0).getClientId());
+        Project curProject = projectService.getProject(wanty.get(0).getProjectId());
 
         model.addAttribute(WantyAttributes.CURRENT_SELLER.getValue(), curSeller);
         model.addAttribute(WantyAttributes.CURRENT_BUYER.getValue(), curBuyer);
         model.addAttribute(WantyAttributes.CURRENT_CLIENT.getValue(), curClient);
+        model.addAttribute(WantyAttributes.CURRENT_PROJECT.getValue(), curProject);
 
         model.addAttribute(WantyAttributes.MAP.getValue(),
-                personService.removeCurrents(curSeller.get(0), curBuyer.get(0), curClient.get(0)));
+                personService.removeCurrents(curSeller, curBuyer, curClient));
+        model.addAttribute(WantyAttributes.PROJECTS.getValue(),
+                projectService.deleteCurrentProject(projectService.getAllTheProjects(), curProject));
 
         return "edit-wanty";
     }
@@ -102,12 +114,12 @@ public class WantyController {
     public String editWanty(@PathVariable("wantyId") long wantyId, @RequestParam("name") String name,
                             @RequestParam("date") Date date, @RequestParam("size") String size,
                             @RequestParam("seller") long sellerId, @RequestParam("buyer") long buyerId,
-                            @RequestParam("client") long clientId, @RequestParam("isPurchased") boolean isPurchased,
-                            @RequestParam("description") String description,
+                            @RequestParam("client") long clientId, @RequestParam("project") long projectId,
+                            @RequestParam("isPurchased") boolean isPurchased, @RequestParam("description") String description,
                             @RequestParam(value = "wantyPhoto", required = false) MultipartFile wantyPhoto) {
 
         wantyService.updateWanty(wantyId, name, date, size, sellerId, buyerId,
-                clientId, isPurchased, description, wantyPhoto);
+                clientId, projectId, isPurchased, description, wantyPhoto);
 
         return "redirect:/";
     }

@@ -54,7 +54,7 @@ public class ProjectController {
         return "redirect:/";
     }
 
-    @PostMapping("/deletePhoneNumber{id}")
+    @PostMapping("/deletePhoneNumber")
     public String deletePhoneNumber(@RequestParam("phoneNumberId") long phoneNumberId) {
 
         projectService.deletePhoneNumber(phoneNumberId);

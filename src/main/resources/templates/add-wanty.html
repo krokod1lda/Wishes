@@ -96,6 +96,21 @@
                             </select>
                         </div>
                     </div>
+
+                    <div>
+                        <div class="col-sm-6">
+                            <label for="projectId" class="form-label">Проект</label>
+                            <select class="form-select" id="projectId">
+                                <option value="">Выберите...</option>
+
+                                <div th:each="el : ${projects}">
+                                    <option th:value="${el.id}"
+                                            th:text="${el.archived ? '(Архив) ' + el.name :
+                                            el.name}" ></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <hr class="my-4">
@@ -166,6 +181,7 @@
         const seller = document.getElementById('sellerId');
         const buyer = document.getElementById('buyerId');
         const client = document.getElementById('clientId');
+        const project = document.getElementById('projectId');
         const isPurchased = document.getElementById('purchasedId').checked;
         const description = document.getElementById('descriptionId');
         let wantyPhoto = document.getElementById('fileUploadId');
@@ -176,6 +192,7 @@
         formData.append('seller', seller.value);
         formData.append('buyer', buyer.value);
         formData.append('client', client.value);
+        formData.append('project', project.value);
         formData.append('isPurchased', isPurchased);
         formData.append('description', description.value);
         formData.append('wantyPhoto', wantyPhoto.files[0]);
@@ -196,23 +213,26 @@
         }
 
         let seller_val = document.getElementById('sellerId').value;
-
         if (seller_val === "") {
             alert("Пожалуйста, выберите продавца");
             return;
         }
 
         let buyer_val = document.getElementById('buyerId').value;
-
         if (buyer_val === "") {
             alert("Пожалуйста, выберите байера");
             return;
         }
 
         let client_val = document.getElementById('clientId').value;
-
         if (client_val === "") {
             alert("Пожалуйста, выберите клиента");
+            return;
+        }
+
+        let project_val = document.getElementById('projectId').value;
+        if (project_val === "") {
+            alert("Пожалуйста, выберите проект");
             return;
         }
 

@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
-import java.util.Base64;
 
 @Entity
 public class Wanty {
@@ -20,6 +18,7 @@ public class Wanty {
     private long sellerId;
     private long buyerId;
     private long clientId;
+    private long projectId;
     private boolean isPurchased;
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -28,7 +27,7 @@ public class Wanty {
     private byte[] wantyPhoto;
 
     public Wanty(String wantyName, Date date, String size, long sellerId, long buyerId,
-                 long clientId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
+                 long clientId, long projectId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
 
         this.wantyName = wantyName;
         this.date = date;
@@ -36,6 +35,7 @@ public class Wanty {
         this.sellerId = sellerId;
         this.buyerId = buyerId;
         this.clientId = clientId;
+        this.projectId = projectId;
         this.isPurchased = isPurchased;
         this.description = description;
         this.wantyPhoto = photoMultipartToByte(wantyPhoto);
@@ -98,6 +98,8 @@ public class Wanty {
     public void setClientId(long clientId) {
         this.clientId = clientId;
     }
+    public long getProjectId() {return projectId;}
+    public void setProjectId(long projectId) {this.projectId = projectId;}
 
     public boolean isPurchased() {
         return isPurchased;
@@ -124,7 +126,7 @@ public class Wanty {
     }
 
     public void update(String wantyName, Date date, String size, long sellerId, long buyerId,
-                        long clientId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
+                        long clientId, long projectId, boolean isPurchased, String description, MultipartFile wantyPhoto) {
 
         this.wantyName = wantyName;
         this.date = date;
@@ -132,6 +134,7 @@ public class Wanty {
         this.sellerId = sellerId;
         this.buyerId = buyerId;
         this.clientId = clientId;
+        this.projectId = projectId;
         this.isPurchased = isPurchased;
         this.description = description;
 
