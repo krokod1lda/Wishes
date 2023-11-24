@@ -2,6 +2,7 @@ package com.krokod1lda.wishes.services;
 
 import com.krokod1lda.wishes.models.PhoneNumber;
 import com.krokod1lda.wishes.models.Project;
+import com.krokod1lda.wishes.models.Wanty;
 import com.krokod1lda.wishes.repositories.PhoneNumberRepository;
 import com.krokod1lda.wishes.repositories.ProjectRepository;
 import com.krokod1lda.wishes.repositories.WantyRepository;
@@ -22,6 +23,8 @@ public class ProjectService {
     PhoneNumberRepository phoneNumberRepository;
     @Autowired
     WantyRepository wantyRepository;
+    @Autowired
+    private WantyService wantyService;
     public void createProject(String name, String[] phones) {
 
         String[] phonesArray = deleteEmptyLines(phones); // Сделаем так, чтобы в массиве не было пустых строк
@@ -118,7 +121,11 @@ public class ProjectService {
         return projectsWithoutCur;
     }
     public void deleteProject(long id) {
-        wantyRepository.deleteWantiesByProjectId(id);
+        ArrayList<Wanty> wanties = wantyRepository.findByProjectId(id);
+        for (Wanty el : wanties) {
+            System.out.println("DELETED WANTY " + el.getWantyName());
+            wantyService.deleteWanty(el.getId());
+        }
         phoneNumberRepository.deletePhoneNumbersByProjectId(id);
         projectRepository.deleteById(id);
     }

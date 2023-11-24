@@ -39,7 +39,7 @@ public class WantyService {
 
         wantyRepository.save(wanty);
 
-        increaseWithStatistics(sellerId, buyerId, clientId, isPurchased);
+        increaseWithStatistics(sellerId, buyerId, clientId, isPurchased); // ИЗУЧИТЬ И ДОБАВИТЬ
     }
 
     public ArrayList<Wanty> getWanty(long wantyId) {
@@ -106,7 +106,7 @@ public class WantyService {
         boolean isSellerChanged = false;
         boolean isBuyerChanged = false;
         boolean isClientChanged = false;
-//        boolean isProjectChanged = false; Использовать потом при создании статистики
+//        boolean isProjectChanged = false; Использовать потом при создании статистики ИЗУЧИТЬ И ДОБАВИТЬ ВСЕ
 
         // if seller is changed
         if(wanty.getSellerId() != sellerId) {
@@ -148,7 +148,7 @@ public class WantyService {
     }
 
     public void deleteWanty(long wantyId) {
-        Wanty wanty = wantyRepository.findById(wantyId).orElseThrow();
+        Wanty wanty = wantyRepository.findById(wantyId).orElseThrow(); // ИЗУЧИТЬ И ДОБАВИТЬ
 
         Person person;
 
@@ -164,7 +164,7 @@ public class WantyService {
         wantyRepository.delete(wanty);
     }
 
-    public ArrayList<HashMap<String, SoldInfo>> getStatistics(Date date1, Date date2) {
+    public ArrayList<HashMap<String, SoldInfo>> getStatistics(Date date1, Date date2) { // ИЗУЧИТЬ И ДОБАВИТЬ
         ArrayList<Wanty> wanties = wantyRepository.getEntriesByDates(date1, date2);
 
         HashMap<Long, SoldInfo> sellerSoldInfoHashMap = new HashMap<>();
@@ -213,7 +213,7 @@ public class WantyService {
         return result;
     }
 
-    public ArrayList<HashMap<String, SoldInfo>> getStartStatistics() {
+    public ArrayList<HashMap<String, SoldInfo>> getStartStatistics() { // ИЗУЧИТЬ И ДОБАВИТЬ
         Iterable<Person> people = personRepository.findAll();
 
         ArrayList<HashMap<String, SoldInfo>> result = new ArrayList<>();
@@ -241,7 +241,7 @@ public class WantyService {
         return result;
     }
 
-    private HashMap<String, SoldInfo> getResult(HashMap<Long, SoldInfo> soldInfoHashMap) {
+    private HashMap<String, SoldInfo> getResult(HashMap<Long, SoldInfo> soldInfoHashMap) { // ИЗУЧИТЬ
         HashMap<String, SoldInfo> result = new HashMap<>();
 
         for (Long id : soldInfoHashMap.keySet())
@@ -269,24 +269,24 @@ public class WantyService {
     }
 
     private void increaseWithStatistics(long sellerId, long buyerId, long clientId, boolean isPurchased) {
-        increase(sellerId, isPurchased);
+        increase(sellerId, isPurchased); // ИЗУЧИТЬ
         increase(buyerId, isPurchased);
         increase(clientId, isPurchased);
     }
 
-    private void increase(long id, boolean isPurchased) {
+    private void increase(long id, boolean isPurchased) { // ИЗУЧИТЬ
         Person person = personRepository.findById(id).orElseThrow();
         person.increase(isPurchased);
         personRepository.save(person);
     }
 
-    private void decrease(long id, boolean isPurchased) {
+    private void decrease(long id, boolean isPurchased) { // ИЗУЧИТЬ
         Person person = personRepository.findById(id).orElseThrow();
         person.decrease(isPurchased);
         personRepository.save(person);
     }
 
-    private void changePurchased(long id, boolean isPurchased) {
+    private void changePurchased(long id, boolean isPurchased) { // ИЗУЧИТЬ
         Person person;
         person = personRepository.findById(id).orElseThrow();
 

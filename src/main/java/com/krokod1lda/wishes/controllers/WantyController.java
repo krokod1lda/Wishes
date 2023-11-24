@@ -1,7 +1,6 @@
 package com.krokod1lda.wishes.controllers;
 
 import com.krokod1lda.wishes.EntityAttributes.PersonAttributes;
-import com.krokod1lda.wishes.EntityAttributes.ProjectAttributes;
 import com.krokod1lda.wishes.EntityAttributes.WantyAttributes;
 import com.krokod1lda.wishes.Structures.SoldInfo;
 import com.krokod1lda.wishes.models.Person;

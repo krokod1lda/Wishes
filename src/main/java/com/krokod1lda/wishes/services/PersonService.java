@@ -2,6 +2,7 @@ package com.krokod1lda.wishes.services;
 
 import com.krokod1lda.wishes.EntityAttributes.PersonAttributes;
 import com.krokod1lda.wishes.models.Person;
+import com.krokod1lda.wishes.models.Wanty;
 import com.krokod1lda.wishes.repositories.PersonRepository;
 import com.krokod1lda.wishes.repositories.WantyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ public class PersonService {
     private PersonRepository personRepository;
     @Autowired
     private WantyRepository wantyRepository;
+    @Autowired
+    private WantyService wantyService;
 
     public void addPerson(String type, String name, String surname) {
         Person person = new Person(type, name, surname);
@@ -80,7 +83,26 @@ public class PersonService {
     }
 
     public void deletePerson (long id) {
-        wantyRepository.deleteAllTheWantiesByPersonId(id);
+
+        ArrayList<Wanty> wanties = new ArrayList<>();
+        Person person = personRepository.findById(id).orElseThrow();
+        if (Objects.equals(person.getType(), "seller")) {
+            System.out.println("It's seller");
+            wanties = wantyRepository.findBySellerId(id);
+        }
+        else if (Objects.equals(person.getType(), "buyer")) {
+            System.out.println("It's buyer");
+            wanties = wantyRepository.findByBuyerId(id);
+        }
+        else {
+            System.out.println("It's client");
+            wanties = wantyRepository.findByClientId(id);
+        }
+
+        for (Wanty el : wanties) {
+            System.out.println("DELETED WANTY " + el.getWantyName());
+            wantyService.deleteWanty(el.getId());
+        }
         personRepository.deleteById(id);
     }
 

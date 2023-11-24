@@ -11,6 +11,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public interface WantyRepository extends CrudRepository<Wanty, Long> {
+
+    ArrayList<Wanty> findByProjectId(long projectId);
     @Transactional
     @Modifying
     void deleteWantiesByProjectId(long projectId);
