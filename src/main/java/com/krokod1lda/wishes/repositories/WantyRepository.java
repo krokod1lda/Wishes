@@ -11,6 +11,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public interface WantyRepository extends CrudRepository<Wanty, Long> {
+    @Transactional
+    @Modifying
+    void deleteWantiesByProjectId(long projectId);
     @Query(value = "select * from wanty where wanty_name like %:wantyName% order by date desc",
             nativeQuery = true)
     ArrayList<Wanty> findByWantyName(@Param("wantyName")String wantyName);

@@ -117,7 +117,7 @@
         formData.append('name', name.value);
         formData.append('phones', phones);
 
-        await fetch('/addProject', {
+        await fetch('/add-project', {
             method: 'POST',
             body: formData
         })

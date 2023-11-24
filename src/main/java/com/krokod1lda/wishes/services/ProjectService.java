@@ -1,10 +1,10 @@
 package com.krokod1lda.wishes.services;
 
-import com.krokod1lda.wishes.models.Person;
 import com.krokod1lda.wishes.models.PhoneNumber;
 import com.krokod1lda.wishes.models.Project;
 import com.krokod1lda.wishes.repositories.PhoneNumberRepository;
 import com.krokod1lda.wishes.repositories.ProjectRepository;
+import com.krokod1lda.wishes.repositories.WantyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +20,11 @@ public class ProjectService {
     ProjectRepository projectRepository;
     @Autowired
     PhoneNumberRepository phoneNumberRepository;
+    @Autowired
+    WantyRepository wantyRepository;
     public void createProject(String name, String[] phones) {
 
-
-//        Сделаем так, чтобы в массиве не было пустых строк
-        String[] phonesArray = deleteEmptyLines(phones);
+        String[] phonesArray = deleteEmptyLines(phones); // Сделаем так, чтобы в массиве не было пустых строк
 
         Project project = new Project(name); // Добавили наименование проекта
         projectRepository.save(project);
@@ -33,20 +33,18 @@ public class ProjectService {
             PhoneNumber phoneNumber = new PhoneNumber(project.getId(), el);
             phoneNumberRepository.save(phoneNumber);
         }
-
+    }
+    public String getProjectName(long id) {
+        Project project = projectRepository.findById(id).orElseThrow();
+        return project.getName();
+    }
+    public Project getProject(long id) {
+        return projectRepository.findById(id).orElseThrow();
     }
     public Iterable<Project> getAllTheProjects() {
-
         Iterable<Project> projects = projectRepository.findAll();
         return projects;
     }
-
-    public List<Project> deleteCurrentProject(Iterable<Project> projects, Project curProject) {
-        List<Project> projectsWithoutCur = iterableToList(projects);
-        projectsWithoutCur.remove(curProject);
-        return projectsWithoutCur;
-    }
-
     public static <E> List<E> iterableToList(Iterable<E> iterable) {
         List<E> list = new ArrayList<>();
         for (E element : iterable) {
@@ -79,7 +77,6 @@ public class ProjectService {
         projectRepository.save(project);
     }
     public List<PhoneNumber> getPhoneNumberByProjectId(long projectId) {
-
         return phoneNumberRepository.findByProjectId(projectId);
     }
     public String[] deleteEmptyLines(String[] array) {
@@ -101,26 +98,28 @@ public class ProjectService {
 
         return phonesList;
     }
+    public void archiveProject(long id) {
+        Project project = projectRepository.findById(id).orElseThrow();
+        project.setArchived(true);
+        projectRepository.save(project);
+    }
+    public void unarchiveProject(long id) {
+        Project project = projectRepository.findById(id).orElseThrow();
+        project.setArchived(false);
+        projectRepository.save(project);
+    }
     public void deletePhoneNumber(long id) {
-
         PhoneNumber phoneNumber = phoneNumberRepository.findById(id).orElseThrow();
         phoneNumberRepository.delete(phoneNumber);
     }
-
+    public List<Project> deleteCurrentProject(Iterable<Project> projects, Project curProject) {
+        List<Project> projectsWithoutCur = iterableToList(projects);
+        projectsWithoutCur.remove(curProject);
+        return projectsWithoutCur;
+    }
     public void deleteProject(long id) {
-
+        wantyRepository.deleteWantiesByProjectId(id);
         phoneNumberRepository.deletePhoneNumbersByProjectId(id);
-
-        Project project = projectRepository.findById(id).orElseThrow();
-        projectRepository.delete(project);
-    }
-    public String getProjectName(long id) {
-
-        Project project = projectRepository.findById(id).orElseThrow();
-        return project.getName();
-    }
-    public Project getProject(long id) {
-
-        return projectRepository.findById(id).orElseThrow();
+        projectRepository.deleteById(id);
     }
 }
