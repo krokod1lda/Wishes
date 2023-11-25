@@ -2,7 +2,7 @@ package com.krokod1lda.wishes.controllers;
 
 import com.krokod1lda.wishes.EntityAttributes.PersonAttributes;
 import com.krokod1lda.wishes.EntityAttributes.WantyAttributes;
-import com.krokod1lda.wishes.Structures.SoldInfo;
+import com.krokod1lda.wishes.structures.SoldInfo;
 import com.krokod1lda.wishes.models.Person;
 import com.krokod1lda.wishes.models.Project;
 import com.krokod1lda.wishes.models.Wanty;
@@ -55,7 +55,6 @@ public class WantyController {
                            @RequestParam("project") long projectId, @RequestParam("isPurchased") boolean isPurchased,
                            @RequestParam("description") String description,
                            @RequestParam(value = "wantyPhoto", required = false) MultipartFile wantyPhoto) {
-
         wantyService.addWanty(name, date, size, sellerId, buyerId, clientId, projectId, isPurchased, description, wantyPhoto);
 
         return "redirect:/";
@@ -75,7 +74,6 @@ public class WantyController {
         model.addAttribute(WantyAttributes.BUYER_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getBuyerId()));
         model.addAttribute(WantyAttributes.CLIENT_NAME.getValue(), personService.getPersonFullName(wanty.get(0).getClientId()));
         model.addAttribute(WantyAttributes.PROJECT_NAME.getValue(), projectService.getProjectName(wanty.get(0).getProjectId()));
-
         model.addAttribute(WantyAttributes.IS_PURCHASED.getValue(), wanty.get(0).isPurchased() ?
                 WantyAttributes.PURCHASED.getValue() : WantyAttributes.NOT_PURCHASED.getValue());
 
@@ -115,7 +113,6 @@ public class WantyController {
                             @RequestParam("client") long clientId, @RequestParam("project") long projectId,
                             @RequestParam("isPurchased") boolean isPurchased, @RequestParam("description") String description,
                             @RequestParam(value = "wantyPhoto", required = false) MultipartFile wantyPhoto) {
-
         wantyService.updateWanty(wantyId, name, date, size, sellerId, buyerId,
                 clientId, projectId, isPurchased, description, wantyPhoto);
 

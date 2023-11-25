@@ -35,7 +35,7 @@
                         <p th:text="${#dates.format(el.date, 'dd.MM.yyyy')}">
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" th:if="${not #strings.isEmpty(el.size)}">
                         <h5 class="form-label">Размер</h5>
                         <p th:text="${el.size}">
                     </div>
@@ -79,9 +79,10 @@
 
                 <p th:text="'Данный товар ' + ${isPurchased} + ' клиентом'"></p>
 
-                <h5>Комментарий</h5>
-
-                <p th:text="${el.description}"></p>
+                <div  th:if="${el.description} != null and ${el.description} != ''">
+                    <h5>Комментарий</h5>
+                    <p th:text="${el.description}"></p>
+                </div>
 
 
                 <hr class="my-4">

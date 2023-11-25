@@ -26,7 +26,7 @@
 
         <div class="modal-body p-5 pt-0">
             <div th:each="el : ${project}" class="form-floating mb-3">
-                <input id="nameId" type="text" th:value="${el.name}" class="form-control rounded-3" placeholder="Наименование">
+                <input id="nameId" type="text" th:value="${el.name}" class="form-control rounded-3" placeholder="Наименование" maxlength="48">
                 <label for="nameId" class="forLabels">Наименование</label>
             </div>
 
@@ -214,6 +214,7 @@
         phoneInput.setAttribute("class", "form-control rounded-3"); // Добавляем класс "form-control" и "rounded-3"
         phoneInput.setAttribute("placeholder", "Другой номер телефона");
         phoneInput.setAttribute("checkPhone", "");
+        phoneInput.setAttribute("maxlength", "20");
 
         // Создание новой метки для поля ввода
         const phoneLabel = document.createElement("label");

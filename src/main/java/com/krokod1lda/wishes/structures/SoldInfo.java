@@ -1,4 +1,4 @@
-package com.krokod1lda.wishes.Structures;
+package com.krokod1lda.wishes.structures;
 
 public class SoldInfo {
     private int totally;

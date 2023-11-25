@@ -39,12 +39,14 @@
     <div class="table-responsive small mt-3">
         <table class="table table-hover table-sm forTables">
             <thead>
-            <tr class="forTrTables">
-                <th scope="col">Продавец</th>
-                <th scope="col">Всего</th>
-                <th scope="col">Купили</th>
-                <th scope="col">Не купили</th>
-            </tr>
+            <div th:if="${not #lists.isEmpty(wantiesSeller.keySet())}">
+                <tr class="forTrTables">
+                    <th scope="col">Продавец</th>
+                    <th scope="col">Всего</th>
+                    <th scope="col">Купили</th>
+                    <th scope="col">Не купили</th>
+                </tr>
+            </div>
             </thead>
 
             <tbody>
@@ -61,12 +63,14 @@
             </tbody>
 
             <thead>
-            <tr class="forTrTables">
-                <th scope="col">Байер</th>
-                <th scope="col">Всего</th>
-                <th scope="col">Купили</th>
-                <th scope="col">Не купили</th>
-            </tr>
+            <div th:if="${not #lists.isEmpty(wantiesBuyer.keySet())}">
+                <tr class="forTrTables">
+                    <th scope="col">Байер</th>
+                    <th scope="col">Всего</th>
+                    <th scope="col">Купили</th>
+                    <th scope="col">Не купили</th>
+                </tr>
+            </div>
             </thead>
 
             <tbody>
@@ -83,12 +87,14 @@
             </tbody>
 
             <thead>
-            <tr class="forTrTables">
-                <th scope="col">Клиент</th>
-                <th scope="col">Всего</th>
-                <th scope="col">Купили</th>
-                <th scope="col">Не купили</th>
-            </tr>
+            <div th:if="${not #lists.isEmpty(wantiesClient.keySet())}">
+                <tr class="forTrTables">
+                    <th scope="col">Клиент</th>
+                    <th scope="col">Всего</th>
+                    <th scope="col">Купили</th>
+                    <th scope="col">Не купили</th>
+                </tr>
+            </div>
             </thead>
 
             <tbody>
@@ -105,12 +111,14 @@
             </tbody>
 
             <thead>
-            <tr class="forTrTables">
-                <th scope="col">Проект</th>
-                <th scope="col">Всего</th>
-                <th scope="col">Купили</th>
-                <th scope="col">Не купили</th>
-            </tr>
+            <div th:if="${not #lists.isEmpty(wantiesProject.keySet())}">
+                <tr class="forTrTables">
+                    <th scope="col">Проект</th>
+                    <th scope="col">Всего</th>
+                    <th scope="col">Купили</th>
+                    <th scope="col">Не купили</th>
+                </tr>
+            </div>
             </thead>
 
             <tbody>
@@ -147,6 +155,11 @@
         const date2 = document.getElementById("date2Id").value
 
         const url = "/statistics?date1=" + date1 + "&date2=" + date2;
+
+        if (date1 === "" || date2 === "") {
+            alert("Введите дату начала и дату окончания!")
+            return;
+        }
 
         var xhr = new XMLHttpRequest();
 

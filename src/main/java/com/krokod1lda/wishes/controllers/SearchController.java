@@ -36,9 +36,7 @@ public class SearchController {
                           @RequestParam("sellerId") long sellerId,
                           @RequestParam("clientId") long clientId,
                           Model model) {
-
         model.addAttribute(SearchAttributes.TITLE.getValue(), SearchAttributes.SEARCH.getValue());
-
         model.addAttribute(SearchAttributes.MAP.getValue(), personService.getAllThePeople());
 
         if(buyerId != 0) {
@@ -59,7 +57,6 @@ public class SearchController {
 
             return "search";
         }
-
         return "redirect:/";
     }
 }

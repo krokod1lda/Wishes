@@ -25,8 +25,8 @@ public class ProjectService {
     WantyRepository wantyRepository;
     @Autowired
     private WantyService wantyService;
-    public void createProject(String name, String[] phones) {
 
+    public void createProject(String name, String[] phones) {
         String[] phonesArray = deleteEmptyLines(phones); // Сделаем так, чтобы в массиве не было пустых строк
 
         Project project = new Project(name); // Добавили наименование проекта
@@ -37,22 +37,30 @@ public class ProjectService {
             phoneNumberRepository.save(phoneNumber);
         }
     }
+
     public String getProjectName(long id) {
         Project project = projectRepository.findById(id).orElseThrow();
+
         return project.getName();
     }
+
     public Project getProject(long id) {
+
         return projectRepository.findById(id).orElseThrow();
     }
+
     public Iterable<Project> getAllTheProjects() {
-        Iterable<Project> projects = projectRepository.findAll();
-        return projects;
+
+        return projectRepository.findAll();
     }
+
     public static <E> List<E> iterableToList(Iterable<E> iterable) {
         List<E> list = new ArrayList<>();
+
         for (E element : iterable) {
             list.add(element);
         }
+
         return list;
     }
 
@@ -68,6 +76,7 @@ public class ProjectService {
         Project project = projectRepository.findById(id).orElseThrow();
 
         project.setName(name);
+
         String[] phonesArray = deleteEmptyLines(phones); // Массив с номерами, который подтягивается
         List <String> phonesList = getPhonesListByPNObject(id); // Список с номерами рассматриваемого объекта
 
@@ -77,54 +86,65 @@ public class ProjectService {
                 phoneNumberRepository.save(phoneNumber);
             }
         }
+
         projectRepository.save(project);
     }
+
     public List<PhoneNumber> getPhoneNumberByProjectId(long projectId) {
+
         return phoneNumberRepository.findByProjectId(projectId);
     }
-    public String[] deleteEmptyLines(String[] array) {
 
+    public String[] deleteEmptyLines(String[] array) {
         String arrStr = Arrays.stream(array)
                 .filter(s -> s != null && !s.isEmpty())
                 .collect(Collectors.joining(", "));
-        String[] resArray = arrStr.split(", ");
 
-        return resArray;
+        return arrStr.split(", ");
     }
 
     public List<String> getPhonesListByPNObject(long id) {
         List <String> phonesList = new ArrayList<String>();
         List<PhoneNumber> phonesListObjects = phoneNumberRepository.findByProjectId(id);
+
         for (PhoneNumber el : phonesListObjects) {
             phonesList.add(el.getPhoneNumber());
         }
 
         return phonesList;
     }
+
     public void archiveProject(long id) {
         Project project = projectRepository.findById(id).orElseThrow();
         project.setArchived(true);
         projectRepository.save(project);
     }
+
     public void unarchiveProject(long id) {
         Project project = projectRepository.findById(id).orElseThrow();
         project.setArchived(false);
         projectRepository.save(project);
     }
+
     public void deletePhoneNumber(long id) {
         PhoneNumber phoneNumber = phoneNumberRepository.findById(id).orElseThrow();
         phoneNumberRepository.delete(phoneNumber);
     }
+
     public List<Project> deleteCurrentProject(Iterable<Project> projects, Project curProject) {
         List<Project> projectsWithoutCur = iterableToList(projects);
         projectsWithoutCur.remove(curProject);
+
         return projectsWithoutCur;
     }
+
     public void deleteProject(long id) {
         ArrayList<Wanty> wanties = wantyRepository.findByProjectId(id);
+
         for (Wanty el : wanties) {
             wantyService.deleteWanty(el.getId());
         }
+
         phoneNumberRepository.deletePhoneNumbersByProjectId(id);
         projectRepository.deleteById(id);
     }

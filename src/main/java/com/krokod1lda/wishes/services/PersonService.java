@@ -83,9 +83,9 @@ public class PersonService {
     }
 
     public void deletePerson (long id) {
-
         ArrayList<Wanty> wanties = new ArrayList<>();
         Person person = personRepository.findById(id).orElseThrow();
+
         if (Objects.equals(person.getType(), "seller")) {
             wanties = wantyRepository.findBySellerId(id);
         }

@@ -1,7 +1,7 @@
 package com.krokod1lda.wishes.services;
 
 import com.krokod1lda.wishes.EntityAttributes.PersonAttributes;
-import com.krokod1lda.wishes.Structures.SoldInfo;
+import com.krokod1lda.wishes.structures.SoldInfo;
 import com.krokod1lda.wishes.models.Person;
 import com.krokod1lda.wishes.models.Project;
 import com.krokod1lda.wishes.models.Wanty;
@@ -42,7 +42,6 @@ public class WantyService {
                 isPurchased, description, wantyPhoto);
 
         wantyRepository.save(wanty);
-
         increaseWithStatistics(sellerId, buyerId, clientId, projectId, isPurchased);
     }
 
@@ -245,6 +244,7 @@ public class WantyService {
         Iterable<Project> projects = projectRepository.findAll();
 
         ArrayList<HashMap<String, SoldInfo>> result = new ArrayList<>();
+
         HashMap<String, SoldInfo> sellerSoldInfoHashMap = new HashMap<>();
         HashMap<String, SoldInfo> buyerSoldInfoHashMap = new HashMap<>();
         HashMap<String, SoldInfo> clientSoldInfoHashMap = new HashMap<>();
@@ -262,6 +262,7 @@ public class WantyService {
             else
                 clientSoldInfoHashMap.put(person.getName() + " " + person.getSurname(), soldInfo);
         }
+
         for (Project project : projects) {
             soldInfo = new SoldInfo(project.getTotally(), project.getPurchased());
             projectSoldInfoHashMap.put(project.getName(), soldInfo);

@@ -24,12 +24,12 @@
 
         <div class="modal-body p-5 pt-0">
             <div class="form-floating mb-3">
-                <input id="nameId" type="text" class="form-control rounded-3" placeholder="Название проекта">
+                <input id="nameId" type="text" class="form-control rounded-3" placeholder="Название проекта" maxlength="48">
                 <label for="nameId" class="forLabels">Название проекта</label>
             </div>
 
             <div class="form-floating mb-3">
-                <input id="phoneNumberId" type="text" class="form-control rounded-3" placeholder="Номер телефона">
+                <input id="phoneNumberId" type="text" class="form-control rounded-3" placeholder="Номер телефона" maxlength="20">
                 <label for="phoneNumberId" class="forLabels">Номер телефона</label>
             </div>
 
@@ -68,6 +68,7 @@
         phoneInput.setAttribute("class", "form-control rounded-3"); // Добавляем класс "form-control" и "rounded-3"
         phoneInput.setAttribute("placeholder", "Другой номер телефона");
         phoneInput.setAttribute("checkPhone", "");
+        phoneInput.setAttribute("maxlength", "20");
 
         // Создание новой метки для поля ввода
         const phoneLabel = document.createElement("label");

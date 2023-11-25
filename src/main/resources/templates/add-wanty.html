@@ -16,7 +16,6 @@
 <div class="container ">
     <main>
         <h4 class="mb-3">Создание запроса</h4>
-
         <hr class="my-4">
 
         <div class="row g-5">
@@ -25,7 +24,7 @@
 
                 <div class="card p-2">
                     <img id="imageId" style="display:none" class="img rounded">
-                    <input class="form-control" id="fileUploadId" type="file" name="fileupload" oninput="previewImage();"/>
+                    <input class="form-control mt-3" id="fileUploadId" type="file" name="fileupload" oninput="previewImage();"/>
                 </div>
             </div>
 
@@ -34,7 +33,7 @@
 
                     <div class="col-12">
                         <label for="nameId" class="form-label">Название</label>
-                        <input type="text" class="form-control" id="nameId" placeholder="Название вещи...">
+                        <input type="text" class="form-control" id="nameId" maxlength="64">
                     </div>
 
                     <div class="col-sm-6">
@@ -44,7 +43,7 @@
 
                     <div class="col-sm-6">
                         <label for="sizeId" class="form-label">Размер</label>
-                        <input type="text" class="form-control" id="sizeId">
+                        <input type="text" class="form-control" id="sizeId" maxlength="64">
                     </div>
 
                 </div>
@@ -133,7 +132,7 @@
 
                     <h5>Комментарий</h5>
                     <div class="my-3">
-                        <textarea id="descriptionId" name="description" class="form-control" rows="8" maxlength="4000"></textarea>
+                        <textarea id="descriptionId" name="description" class="form-control" rows="8" maxlength="4096"></textarea>
                     </div>
 
                 </div>
@@ -209,6 +208,12 @@
         let name_val = document.getElementById('nameId').value;
         if (name_val === "") {
             alert("Пожалуйста, введите название");
+            return;
+        }
+
+        let date_val = document.getElementById('dateId').value;
+        if (date_val === "") {
+            alert("Пожалуйста, введите дату");
             return;
         }
 

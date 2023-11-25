@@ -23,7 +23,7 @@
             <div class="col-md-5 col-lg-5 order-md-last">
                 <div class="card p-2">
                     <img id="imageId" th:src="@{'data:image/png;base64, ' + ${wantyPhoto}}" onerror="this.src='/images/defaultWanty.jpeg';" alt="sorry" class="img rounded">
-                    <input class="form-control" id="fileUploadId" type="file" name="fileupload" oninput="previewImage();"/>
+                    <input class="form-control mt-3" id="fileUploadId" type="file" name="fileupload" oninput="previewImage();"/>
                 </div>
             </div>
 
@@ -35,7 +35,7 @@
 
                     <div class="col-12">
                         <label for="nameId" class="form-label">Название</label>
-                        <input th:value="${el.wantyName}" type="text" class="form-control" id="nameId" placeholder="Название вещи...">
+                        <input th:value="${el.wantyName}" type="text" class="form-control" id="nameId" maxlength="64">
                     </div>
 
                     <div class="col-sm-6">
@@ -45,7 +45,7 @@
 
                     <div class="col-sm-6">
                         <label for="sizeId" class="form-label">Размер</label>
-                        <input th:value="${el.size}" type="text" class="form-control" id="sizeId">
+                        <input th:value="${el.size}" type="text" class="form-control" id="sizeId" maxlength="64">
                     </div>
 
                 </div>
@@ -223,6 +223,12 @@
         let name_val = document.getElementById('nameId').value;
         if (name_val === "") {
             alert("Пожалуйста, введите название");
+            return;
+        }
+
+        let date_val = document.getElementById('dateId').value;
+        if (date_val === "") {
+            alert("Пожалуйста, введите дату");
             return;
         }
 

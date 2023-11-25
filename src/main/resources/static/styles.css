@@ -1,3 +1,18 @@
+div.roundedImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.forDescription {
+    overflow: hidden; /* скрывает лишний текст */
+    text-overflow: ellipsis; /* отображает многоточие для обрезанного текста */
+    max-width: 600px; /* устанавливает максимальную ширину элемента (замените на нужное значение) */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* устанавливает максимальное количество отображаемых строк (замените на нужное значение) */
+}
+
 .forTrTables {
     background-color: rgba(138,138,138,0.33);
     font-weight: bold;
