@@ -100,7 +100,9 @@
     var imgElements = document.querySelectorAll('.roundedImage img');
 
     // Проходимся по каждому элементу
-    imgElements.forEach(function(imgElement) {
+    for (var i = 0; i < imgElements.length; i++) {
+        var imgElement = imgElements[i];
+
         // Создаем новый элемент canvas
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');
@@ -121,7 +123,7 @@
         // Изменяем background-color у родительского элемента
         var roundedImageElement = imgElement.closest('.roundedImage');
         roundedImageElement.style.backgroundColor = color;
-    });
+    }
 </script>
 
 <script>
